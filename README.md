@@ -1,3 +1,3 @@
-# visit_zurich
+# discover_zurich
 
 Project for the Data Integration course
