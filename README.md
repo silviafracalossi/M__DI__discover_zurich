@@ -1,3 +1,3 @@
-# discover_zurich
+# Discover Zurich
 
-Project for the Data Integration course
+Project for the Data Integration course.
