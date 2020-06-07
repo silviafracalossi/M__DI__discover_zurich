@@ -1,0 +1,450 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.semanticweb.org/silvia/ontologies/2020/5/untitled-ontology-13"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://www.semanticweb.org/silvia/ontologies/2020/5/untitled-ontology-13">
+    <Prefix name="" IRI="http://www.semanticweb.org/silvia/ontologies/2020/5/untitled-ontology-13#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Declaration>
+        <Class IRI="#BikeParking"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#BikeRental"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#BusLine"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#BusStop"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#CarParking"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#District"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Neighbourhood"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#PointOfInterest"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#StopsAt"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TrainStation"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#bikeParkingIn"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#bikeRentalIn"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#busStopIn"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#carParkingIn"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#neighbourhoodIn"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#poiIn"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#stopsAtBusLine"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#stopsAtBusStop"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#trainStationIn"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#bs_location"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#bs_name"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#bs_type"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#poi_name"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="#BikeParking"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#bikeParkingIn"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#BikeRental"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#bikeRentalIn"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#BusLine"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#stopsAtBusLine"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#BusStop"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#busStopIn"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#BusStop"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#stopsAtBusStop"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#CarParking"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#carParkingIn"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Neighbourhood"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#neighbourhoodIn"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#PointOfInterest"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#poiIn"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#StopsAt"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#stopsAtBusLine"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#StopsAt"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#stopsAtBusStop"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#TrainStation"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#trainStationIn"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <DisjointClasses>
+        <Class IRI="#BikeParking"/>
+        <Class IRI="#BikeRental"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeParking"/>
+        <Class IRI="#BusLine"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeParking"/>
+        <Class IRI="#BusStop"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeParking"/>
+        <Class IRI="#CarParking"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeParking"/>
+        <Class IRI="#District"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeParking"/>
+        <Class IRI="#Neighbourhood"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeParking"/>
+        <Class IRI="#PointOfInterest"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeParking"/>
+        <Class IRI="#StopsAt"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeParking"/>
+        <Class IRI="#TrainStation"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeRental"/>
+        <Class IRI="#BusLine"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeRental"/>
+        <Class IRI="#BusStop"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeRental"/>
+        <Class IRI="#CarParking"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeRental"/>
+        <Class IRI="#District"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeRental"/>
+        <Class IRI="#Neighbourhood"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeRental"/>
+        <Class IRI="#PointOfInterest"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeRental"/>
+        <Class IRI="#StopsAt"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BikeRental"/>
+        <Class IRI="#TrainStation"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusLine"/>
+        <Class IRI="#BusStop"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusLine"/>
+        <Class IRI="#CarParking"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusLine"/>
+        <Class IRI="#District"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusLine"/>
+        <Class IRI="#Neighbourhood"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusLine"/>
+        <Class IRI="#PointOfInterest"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusLine"/>
+        <Class IRI="#StopsAt"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusLine"/>
+        <Class IRI="#TrainStation"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusStop"/>
+        <Class IRI="#CarParking"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusStop"/>
+        <Class IRI="#District"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusStop"/>
+        <Class IRI="#Neighbourhood"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusStop"/>
+        <Class IRI="#PointOfInterest"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusStop"/>
+        <Class IRI="#StopsAt"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#BusStop"/>
+        <Class IRI="#TrainStation"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#CarParking"/>
+        <Class IRI="#District"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#CarParking"/>
+        <Class IRI="#Neighbourhood"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#CarParking"/>
+        <Class IRI="#PointOfInterest"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#CarParking"/>
+        <Class IRI="#StopsAt"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#CarParking"/>
+        <Class IRI="#TrainStation"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#District"/>
+        <Class IRI="#Neighbourhood"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#District"/>
+        <Class IRI="#PointOfInterest"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#District"/>
+        <Class IRI="#StopsAt"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#District"/>
+        <Class IRI="#TrainStation"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Neighbourhood"/>
+        <Class IRI="#PointOfInterest"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Neighbourhood"/>
+        <Class IRI="#StopsAt"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Neighbourhood"/>
+        <Class IRI="#TrainStation"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#PointOfInterest"/>
+        <Class IRI="#StopsAt"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#PointOfInterest"/>
+        <Class IRI="#TrainStation"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#StopsAt"/>
+        <Class IRI="#TrainStation"/>
+    </DisjointClasses>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#bikeParkingIn"/>
+        <Class IRI="#BikeParking"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#bikeRentalIn"/>
+        <Class IRI="#BikeRental"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#busStopIn"/>
+        <Class IRI="#BusStop"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#carParkingIn"/>
+        <Class IRI="#CarParking"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#neighbourhoodIn"/>
+        <Class IRI="#Neighbourhood"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#poiIn"/>
+        <Class IRI="#PointOfInterest"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#stopsAtBusLine"/>
+        <Class IRI="#StopsAt"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#stopsAtBusStop"/>
+        <Class IRI="#StopsAt"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#trainStationIn"/>
+        <Class IRI="#TrainStation"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#bikeParkingIn"/>
+        <Class IRI="#District"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#bikeRentalIn"/>
+        <Class IRI="#District"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#busStopIn"/>
+        <Class IRI="#District"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#carParkingIn"/>
+        <Class IRI="#District"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#neighbourhoodIn"/>
+        <Class IRI="#District"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#poiIn"/>
+        <Class IRI="#District"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#stopsAtBusLine"/>
+        <Class IRI="#BusLine"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#stopsAtBusStop"/>
+        <Class IRI="#BusStop"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#trainStationIn"/>
+        <Class IRI="#District"/>
+    </ObjectPropertyRange>
+    <DataPropertyDomain>
+        <DataProperty IRI="#bs_location"/>
+        <Class IRI="#BusStop"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#bs_name"/>
+        <Class IRI="#BusStop"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#bs_type"/>
+        <Class IRI="#BusStop"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#poi_name"/>
+        <Class IRI="#PointOfInterest"/>
+    </DataPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty IRI="#bs_location"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#bs_name"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#bs_type"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#poi_name"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
