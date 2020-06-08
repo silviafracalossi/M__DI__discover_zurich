@@ -1,0 +1,18 @@
+[PrefixDeclaration]
+:		http://www.semanticweb.org/silvia/ontologies/2020/5/untitled-ontology-13#
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:		http://www.w3.org/XML/1998/namespace
+xsd:		http://www.w3.org/2001/XMLSchema#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+
+[SourceDeclaration]
+sourceUri	datasource1
+connectionUrl	jdbc:vdb://localhost:9999/discover_zurich
+username	admin
+password	admin
+driverClass	com.denodo.vdp.jdbc.Driver
+
+[MappingDeclaration] @collection [[
+]]
+
