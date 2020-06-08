@@ -1,0 +1,412 @@
+﻿# Generated with Denodo Platform 7.0 update 20190312.
+
+ENTER SINGLE USER MODE;
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+# 0 ====================================================================
+
+# #######################################
+# DATABASE
+# #######################################
+CREATE OR REPLACE DATABASE discover_zurich 'Data Integration Project';
+
+CONNECT DATABASE discover_zurich;
+
+# #######################################
+# LISTENERS JMS
+# #######################################
+# No listeners jms
+# #######################################
+# DATASOURCES
+# #######################################
+CREATE OR REPLACE DATASOURCE DF bike_parking_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/06 - bike parking.csv'
+    COLUMNDELIMITER = ','
+    ENDOFLINEDELIMITER = '\n'
+    HEADER = TRUE;
+
+CREATE OR REPLACE DATASOURCE DF bike_rental_csv_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/08 - bike rental.csv'
+    COLUMNDELIMITER = ','
+    ENDOFLINEDELIMITER = '\n'
+    HEADER = TRUE;
+
+CREATE OR REPLACE DATASOURCE DF buses_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/03 - bus.csv'
+    COLUMNDELIMITER = ','
+    ENDOFLINEDELIMITER = '\n'
+    HEADER = TRUE;
+
+CREATE OR REPLACE DATASOURCE DF car_parking_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/05 - car parking.csv'
+    COLUMNDELIMITER = ','
+    ENDOFLINEDELIMITER = '\n'
+    HEADER = TRUE;
+
+CREATE OR REPLACE DATASOURCE DF districts_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/01 - district.csv'
+    COLUMNDELIMITER = ','
+    ENDOFLINEDELIMITER = '\n'
+    HEADER = TRUE;
+
+CREATE OR REPLACE DATASOURCE DF neighbourhoods_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/02 - neighbourhood.csv'
+    COLUMNDELIMITER = ';'
+    ENDOFLINEDELIMITER = '\n'
+    HEADER = TRUE;
+
+CREATE OR REPLACE DATASOURCE JSON attractions_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/12 - attraction.json';
+
+CREATE OR REPLACE DATASOURCE JSON bars_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/10 - bar.json';
+
+CREATE OR REPLACE DATASOURCE JSON bike_rental_json_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/07 - bike rental.json';
+
+CREATE OR REPLACE DATASOURCE JSON museums_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/11 - museum.json';
+
+CREATE OR REPLACE DATASOURCE JSON restaurants_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/09 - restaurant.json';
+
+CREATE OR REPLACE DATASOURCE JSON shoppings_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/13 - shopping.json';
+
+CREATE OR REPLACE DATASOURCE JSON train_stations_file
+    ROUTE LOCAL 'LocalConnection' 'D:/Uni/repositories/discover_zurich/datasets/04 - train station.json';
+
+# #######################################
+# DATABASE CONFIGURATION
+# #######################################
+ALTER DATABASE discover_zurich
+  CHARSET DEFAULT;
+
+# #######################################
+# WRAPPERS
+# #######################################
+CREATE OR REPLACE WRAPPER DF car_parking_file_view
+    DATASOURCENAME=car_parking_file
+    OUTPUTSCHEMA (
+        adr_inter_0 = '"adr_inter"' (OPT),
+        address = '"adresse"' (OPT),
+        adrzus_int_0 = '"adrzus_int"' (OPT),
+        behindertenparkplatz_0 = '"behindertenparkplatz"' (OPT),
+        bemerkung_0 = '"bemerkung"' (OPT),
+        ccmail_0 = '"ccmail"' (OPT),
+        da_0 = '"da"' (OPT),
+        datum_0 = '"datum"' (OPT),
+        datum_cms_0 = '"datum_cms"' (OPT),
+        dep_0 = '"dep"' (OPT),
+        editor_0 = '"editor"' (OPT),
+        erforderlichedokumente_0 = '"erforderlichedokumente"' (OPT),
+        fax_0 = '"fax"' (OPT),
+        hausnummer_0 = '"hausnummer"' (OPT),
+        hindernisfreiheit_0 = '"hindernisfreiheit"' (OPT),
+        infrastruktur_0 = '"infrastruktur"' (OPT),
+        isbetriebsferien_gebaeude_0 = '"isbetriebsferien_gebaeude"' (OPT),
+        isbetriebsferien_schalter_0 = '"isbetriebsferien_schalter"' (OPT),
+        kategorie_0 = '"kategorie"' (OPT),
+        mail_0 = '"mail"' (OPT),
+        name = '"name"' (OPT),
+        namenzus_0 = '"namenzus"' (OPT),
+        car_parking_id = '"objectid"' (OPT),
+        oeffnungszeiten_gebaeude_di_0 = '"oeffnungszeiten_gebaeude_di"' (OPT),
+        oeffnungszeiten_gebaeude_do_0 = '"oeffnungszeiten_gebaeude_do"' (OPT),
+        oeffnungszeiten_gebaeude_fr_0 = '"oeffnungszeiten_gebaeude_fr"' (OPT),
+        oeffnungszeiten_gebaeude_mi_0 = '"oeffnungszeiten_gebaeude_mi"' (OPT),
+        oeffnungszeiten_gebaeude_mo_0 = '"oeffnungszeiten_gebaeude_mo"' (OPT),
+        oeffnungszeiten_gebaeude_sa_0 = '"oeffnungszeiten_gebaeude_sa"' (OPT),
+        oeffnungszeiten_gebaeude_so_0 = '"oeffnungszeiten_gebaeude_so"' (OPT),
+        oeffnungszeiten_schalter_di_0 = '"oeffnungszeiten_schalter_di"' (OPT),
+        oeffnungszeiten_schalter_do_0 = '"oeffnungszeiten_schalter_do"' (OPT),
+        oeffnungszeiten_schalter_fr_0 = '"oeffnungszeiten_schalter_fr"' (OPT),
+        oeffnungszeiten_schalter_mi_0 = '"oeffnungszeiten_schalter_mi"' (OPT),
+        oeffnungszeiten_schalter_mo_0 = '"oeffnungszeiten_schalter_mo"' (OPT),
+        oeffnungszeiten_schalter_sa_0 = '"oeffnungszeiten_schalter_sa"' (OPT),
+        oeffnungszeiten_schalter_so_0 = '"oeffnungszeiten_schalter_so"' (OPT),
+        ort_0 = '"ort"' (OPT),
+        plz_0 = '"plz"' (OPT),
+        poi_id_0 = '"poi_id"' (OPT),
+        postadresse_0 = '"postadresse"' (OPT),
+        publish_internet_0 = '"publish_internet"' (OPT),
+        strasse_0 = '"strasse"' (OPT),
+        suchen_0 = '"suchen"' (OPT),
+        tel_0 = '"tel"' (OPT),
+        tel2_0 = '"tel2"' (OPT),
+        www_0 = '"www"' (OPT),
+        zahlungsmittel_internet_0 = '"zahlungsmittel_internet"' (OPT),
+        zahlungsmittel_schalter_0 = '"zahlungsmittel_schalter"' (OPT),
+        zahlungsmittel_telefon_0 = '"zahlungsmittel_telefon"' (OPT),
+        zvv_label_0 = '"zvv_label"' (OPT),
+        zvv_link_0 = '"zvv_link"' (OPT),
+        link_pls_0 = '"link_pls"' (OPT),
+        spaces_no = '"anzahl_oeffentliche_pp"' (OPT),
+        id_0 = '"id"' (OPT),
+        davon_behinderten_pp_0 = '"davon_behinderten_pp"' (OPT),
+        davon_elektro_pp_0 = '"davon_elektro_pp"' (OPT),
+        davon_frauen_pp_0 = '"davon_frauen_pp"' (OPT),
+        davon_klein_pp_0 = '"davon_klein_pp"' (OPT),
+        anzahl_mobility_pp_0 = '"anzahl_mobility_pp"' (OPT),
+        geometry_0 = '"geometry"' (OPT)
+    );
+
+CREATE OR REPLACE WRAPPER DF districts_file_view
+    DATASOURCENAME=districts_file
+    OUTPUTSCHEMA (
+        objid = '"objid"' (OPT),
+        id_district = '"knr"' (OPT),
+        name = '"kname"' (OPT),
+        area = '"geometry"' (OPT)
+    );
+
+CREATE OR REPLACE WRAPPER DF neighbourhoods_file_view
+    DATASOURCENAME=neighbourhoods_file
+    OUTPUTSCHEMA (
+        district = 'district' (OPT),
+        name = 'name' (OPT),
+        neighbourhoods = 'neighbourhoods' (OPT)
+    );
+
+# #######################################
+# STORED PROCEDURES
+# #######################################
+# No stored procedures
+# #######################################
+# TYPES
+# #######################################
+# No types
+# #######################################
+# MAPS
+# #######################################
+# No maps
+# #######################################
+# BASE VIEWS
+# #######################################
+CREATE OR REPLACE TABLE car_parking_file_view I18N gb (
+        adr_inter_0:text, 
+        address:text, 
+        adrzus_int_0:text, 
+        behindertenparkplatz_0:text, 
+        bemerkung_0:text, 
+        ccmail_0:text, 
+        da_0:text, 
+        datum_0:text, 
+        datum_cms_0:text, 
+        dep_0:text, 
+        editor_0:text, 
+        erforderlichedokumente_0:text, 
+        fax_0:text, 
+        hausnummer_0:text, 
+        hindernisfreiheit_0:text, 
+        infrastruktur_0:text, 
+        isbetriebsferien_gebaeude_0:text, 
+        isbetriebsferien_schalter_0:text, 
+        kategorie_0:text, 
+        mail_0:text, 
+        name:text, 
+        namenzus_0:text, 
+        car_parking_id:int, 
+        oeffnungszeiten_gebaeude_di_0:text, 
+        oeffnungszeiten_gebaeude_do_0:text, 
+        oeffnungszeiten_gebaeude_fr_0:text, 
+        oeffnungszeiten_gebaeude_mi_0:text, 
+        oeffnungszeiten_gebaeude_mo_0:text, 
+        oeffnungszeiten_gebaeude_sa_0:text, 
+        oeffnungszeiten_gebaeude_so_0:text, 
+        oeffnungszeiten_schalter_di_0:text, 
+        oeffnungszeiten_schalter_do_0:text, 
+        oeffnungszeiten_schalter_fr_0:text, 
+        oeffnungszeiten_schalter_mi_0:text, 
+        oeffnungszeiten_schalter_mo_0:text, 
+        oeffnungszeiten_schalter_sa_0:text, 
+        oeffnungszeiten_schalter_so_0:text, 
+        ort_0:text, 
+        plz_0:text, 
+        poi_id_0:text, 
+        postadresse_0:text, 
+        publish_internet_0:text, 
+        strasse_0:text, 
+        suchen_0:text, 
+        tel_0:text, 
+        tel2_0:text, 
+        www_0:text, 
+        zahlungsmittel_internet_0:text, 
+        zahlungsmittel_schalter_0:text, 
+        zahlungsmittel_telefon_0:text, 
+        zvv_label_0:text, 
+        zvv_link_0:text, 
+        link_pls_0:text, 
+        spaces_no:int, 
+        id_0:text, 
+        davon_behinderten_pp_0:text, 
+        davon_elektro_pp_0:text, 
+        davon_frauen_pp_0:text, 
+        davon_klein_pp_0:text, 
+        anzahl_mobility_pp_0:text, 
+        geometry_0:text
+    )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD car_parking_file_view(
+        I18N gb
+        CONSTRAINTS (
+             ADD adr_inter_0 (=,in) OPT ANY
+             ADD address (=,in) OPT ANY
+             ADD adrzus_int_0 (=,in) OPT ANY
+             ADD behindertenparkplatz_0 (=,in) OPT ANY
+             ADD bemerkung_0 (=,in) OPT ANY
+             ADD ccmail_0 (=,in) OPT ANY
+             ADD da_0 (=,in) OPT ANY
+             ADD datum_0 (=,in) OPT ANY
+             ADD datum_cms_0 (=,in) OPT ANY
+             ADD dep_0 (=,in) OPT ANY
+             ADD editor_0 (=,in) OPT ANY
+             ADD erforderlichedokumente_0 (=,in) OPT ANY
+             ADD fax_0 (=,in) OPT ANY
+             ADD hausnummer_0 (=,in) OPT ANY
+             ADD hindernisfreiheit_0 (=,in) OPT ANY
+             ADD infrastruktur_0 (=,in) OPT ANY
+             ADD isbetriebsferien_gebaeude_0 (=,in) OPT ANY
+             ADD isbetriebsferien_schalter_0 (=,in) OPT ANY
+             ADD kategorie_0 (=,in) OPT ANY
+             ADD mail_0 (=,in) OPT ANY
+             ADD name (=,in) OPT ANY
+             ADD namenzus_0 (=,in) OPT ANY
+             ADD car_parking_id (=,in) OPT ANY
+             ADD oeffnungszeiten_gebaeude_di_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_gebaeude_do_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_gebaeude_fr_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_gebaeude_mi_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_gebaeude_mo_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_gebaeude_sa_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_gebaeude_so_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_schalter_di_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_schalter_do_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_schalter_fr_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_schalter_mi_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_schalter_mo_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_schalter_sa_0 (=,in) OPT ANY
+             ADD oeffnungszeiten_schalter_so_0 (=,in) OPT ANY
+             ADD ort_0 (=,in) OPT ANY
+             ADD plz_0 (=,in) OPT ANY
+             ADD poi_id_0 (=,in) OPT ANY
+             ADD postadresse_0 (=,in) OPT ANY
+             ADD publish_internet_0 (=,in) OPT ANY
+             ADD strasse_0 (=,in) OPT ANY
+             ADD suchen_0 (=,in) OPT ANY
+             ADD tel_0 (=,in) OPT ANY
+             ADD tel2_0 (=,in) OPT ANY
+             ADD www_0 (=,in) OPT ANY
+             ADD zahlungsmittel_internet_0 (=,in) OPT ANY
+             ADD zahlungsmittel_schalter_0 (=,in) OPT ANY
+             ADD zahlungsmittel_telefon_0 (=,in) OPT ANY
+             ADD zvv_label_0 (=,in) OPT ANY
+             ADD zvv_link_0 (=,in) OPT ANY
+             ADD link_pls_0 (=,in) OPT ANY
+             ADD spaces_no (=,in) OPT ANY
+             ADD id_0 (=,in) OPT ANY
+             ADD davon_behinderten_pp_0 (=,in) OPT ANY
+             ADD davon_elektro_pp_0 (=,in) OPT ANY
+             ADD davon_frauen_pp_0 (=,in) OPT ANY
+             ADD davon_klein_pp_0 (=,in) OPT ANY
+             ADD anzahl_mobility_pp_0 (=,in) OPT ANY
+             ADD geometry_0 (=,in) OPT ANY
+        )
+        OUTPUTLIST (address, adr_inter_0, adrzus_int_0, anzahl_mobility_pp_0, behindertenparkplatz_0, bemerkung_0, car_parking_id, ccmail_0, da_0, datum_0, datum_cms_0, davon_behinderten_pp_0, davon_elektro_pp_0, davon_frauen_pp_0, davon_klein_pp_0, dep_0, editor_0, erforderlichedokumente_0, fax_0, geometry_0, hausnummer_0, hindernisfreiheit_0, id_0, infrastruktur_0, isbetriebsferien_gebaeude_0, isbetriebsferien_schalter_0, kategorie_0, link_pls_0, mail_0, name, namenzus_0, oeffnungszeiten_gebaeude_di_0, oeffnungszeiten_gebaeude_do_0, oeffnungszeiten_gebaeude_fr_0, oeffnungszeiten_gebaeude_mi_0, oeffnungszeiten_gebaeude_mo_0, oeffnungszeiten_gebaeude_sa_0, oeffnungszeiten_gebaeude_so_0, oeffnungszeiten_schalter_di_0, oeffnungszeiten_schalter_do_0, oeffnungszeiten_schalter_fr_0, oeffnungszeiten_schalter_mi_0, oeffnungszeiten_schalter_mo_0, oeffnungszeiten_schalter_sa_0, oeffnungszeiten_schalter_so_0, ort_0, plz_0, poi_id_0, postadresse_0, publish_internet_0, spaces_no, strasse_0, suchen_0, tel2_0, tel_0, www_0, zahlungsmittel_internet_0, zahlungsmittel_schalter_0, zahlungsmittel_telefon_0, zvv_label_0, zvv_link_0
+        )
+        WRAPPER (df car_parking_file_view)
+    );
+
+CREATE OR REPLACE TABLE districts_file_view I18N gb (
+        objid:int, 
+        id_district:int, 
+        name:text, 
+        area:text
+    )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD districts_file_view(
+        I18N gb
+        CONSTRAINTS (
+             ADD objid (=,in) OPT ANY
+             ADD id_district (=,in) OPT ANY
+             ADD name (=,in) OPT ANY
+             ADD area (=,in) OPT ANY
+        )
+        OUTPUTLIST (area, id_district, name, objid
+        )
+        WRAPPER (df districts_file_view)
+    );
+
+CREATE OR REPLACE TABLE neighbourhoods_file_view I18N gb (
+        district:text, 
+        name:text, 
+        neighbourhoods:text
+    )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD neighbourhoods_file_view(
+        I18N gb
+        CONSTRAINTS (
+             ADD district (=,in) OPT ANY
+             ADD name (=,in) OPT ANY
+             ADD neighbourhoods (=,in) OPT ANY
+        )
+        OUTPUTLIST (district, name, neighbourhoods
+        )
+        WRAPPER (df neighbourhoods_file_view)
+    );
+
+# #######################################
+# VIEWS
+# #######################################
+CREATE OR REPLACE VIEW car_parking
+    PRIMARY KEY ( 'car_parking_id' ) AS SELECT car_parking_file_view.address AS address, car_parking_file_view.name AS name, car_parking_file_view.car_parking_id AS car_parking_id, car_parking_file_view.spaces_no AS spaces_no, car_parking_file_view.geometry_0 AS location FROM car_parking_file_view;
+
+ALTER VIEW car_parking
+ LAYOUT (car_parking_file_view = [20, 20, 274, 105]);
+
+CREATE OR REPLACE VIEW districts
+    PRIMARY KEY ( 'id_district' ) AS SELECT districts_file_view.id_district AS id_district, districts_file_view.name AS name, districts_file_view.area AS area FROM districts_file_view;
+
+ALTER VIEW districts
+ LAYOUT (districts_file_view = [20, 20, 200, 105]);
+
+CREATE OR REPLACE VIEW neighbourhoods
+    PRIMARY KEY ( 'name' ) AS SELECT neighbourhoods_file_view.district AS id_district, neighbourhoods_file_view.neighbourhoods AS name FROM neighbourhoods_file_view;
+
+ALTER VIEW neighbourhoods
+ LAYOUT (neighbourhoods_file_view = [20, 20, 213, 86]);
+
+# #######################################
+# ASSOCIATIONS
+# #######################################
+# No associations
+# #######################################
+# WEBSERVICES
+# #######################################
+# No web services
+# #######################################
+# WIDGETS
+# #######################################
+# No widgets
+# #######################################
+# WEBCONTAINER WEB SERVICE DEPLOYMENTS
+# #######################################
+# No deployed web services
+# #######################################
+# WEBCONTAINER WIDGET DEPLOYMENTS
+# #######################################
+# No deployed widgets
+# #######################################
+# Closing connection with database discover_zurich
+# #######################################
+CLOSE;
+
+
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+EXIT SINGLE USER MODE;
