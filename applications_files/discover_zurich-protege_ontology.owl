@@ -11,6 +11,7 @@
     <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
     <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
     <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="obda" IRI="https://w3id.org/obda/vocabulary#"/>
     <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
     <Declaration>
         <Class IRI="#BikeParking"/>
@@ -64,12 +65,6 @@
         <ObjectProperty IRI="#trainStationIn"/>
     </Declaration>
     <Declaration>
-        <DataProperty IRI="#bl_id"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#bp_id"/>
-    </Declaration>
-    <Declaration>
         <DataProperty IRI="#bp_location"/>
     </Declaration>
     <Declaration>
@@ -85,9 +80,6 @@
         <DataProperty IRI="#br_email"/>
     </Declaration>
     <Declaration>
-        <DataProperty IRI="#br_id"/>
-    </Declaration>
-    <Declaration>
         <DataProperty IRI="#br_location"/>
     </Declaration>
     <Declaration>
@@ -98,9 +90,6 @@
     </Declaration>
     <Declaration>
         <DataProperty IRI="#br_website"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#bs_id"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#bs_location"/>
@@ -115,9 +104,6 @@
         <DataProperty IRI="#cp_address"/>
     </Declaration>
     <Declaration>
-        <DataProperty IRI="#cp_id"/>
-    </Declaration>
-    <Declaration>
         <DataProperty IRI="#cp_location"/>
     </Declaration>
     <Declaration>
@@ -128,9 +114,6 @@
     </Declaration>
     <Declaration>
         <DataProperty IRI="#d_area"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#d_id"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#d_name"/>
@@ -148,9 +131,6 @@
         <DataProperty IRI="#p_description"/>
     </Declaration>
     <Declaration>
-        <DataProperty IRI="#p_id"/>
-    </Declaration>
-    <Declaration>
         <DataProperty IRI="#p_image_url"/>
     </Declaration>
     <Declaration>
@@ -166,9 +146,6 @@
         <DataProperty IRI="#p_website"/>
     </Declaration>
     <Declaration>
-        <DataProperty IRI="#ts_id"/>
-    </Declaration>
-    <Declaration>
         <DataProperty IRI="#ts_location"/>
     </Declaration>
     <Declaration>
@@ -180,13 +157,6 @@
             <ObjectProperty IRI="#bikeParkingIn"/>
             <Class abbreviatedIRI="owl:Thing"/>
         </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#BikeParking"/>
-        <DataSomeValuesFrom>
-            <DataProperty IRI="#bp_id"/>
-            <Datatype abbreviatedIRI="rdfs:Literal"/>
-        </DataSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#BikeParking"/>
@@ -233,13 +203,6 @@
     <SubClassOf>
         <Class IRI="#BikeRental"/>
         <DataSomeValuesFrom>
-            <DataProperty IRI="#br_id"/>
-            <Datatype abbreviatedIRI="rdfs:Literal"/>
-        </DataSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#BikeRental"/>
-        <DataSomeValuesFrom>
             <DataProperty IRI="#br_location"/>
             <Datatype abbreviatedIRI="rdfs:Literal"/>
         </DataSomeValuesFrom>
@@ -273,13 +236,6 @@
         </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#BusLine"/>
-        <DataSomeValuesFrom>
-            <DataProperty IRI="#bl_id"/>
-            <Datatype abbreviatedIRI="xsd:integer"/>
-        </DataSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="#BusStop"/>
         <ObjectSomeValuesFrom>
             <ObjectProperty IRI="#busStopIn"/>
@@ -292,13 +248,6 @@
             <ObjectProperty IRI="#stopsAt"/>
             <Class abbreviatedIRI="owl:Thing"/>
         </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#BusStop"/>
-        <DataSomeValuesFrom>
-            <DataProperty IRI="#bs_id"/>
-            <Datatype abbreviatedIRI="rdfs:Literal"/>
-        </DataSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#BusStop"/>
@@ -338,13 +287,6 @@
     <SubClassOf>
         <Class IRI="#CarParking"/>
         <DataSomeValuesFrom>
-            <DataProperty IRI="#cp_id"/>
-            <Datatype abbreviatedIRI="rdfs:Literal"/>
-        </DataSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#CarParking"/>
-        <DataSomeValuesFrom>
             <DataProperty IRI="#cp_location"/>
             <Datatype abbreviatedIRI="rdfs:Literal"/>
         </DataSomeValuesFrom>
@@ -367,13 +309,6 @@
         <Class IRI="#District"/>
         <DataSomeValuesFrom>
             <DataProperty IRI="#d_area"/>
-            <Datatype abbreviatedIRI="rdfs:Literal"/>
-        </DataSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#District"/>
-        <DataSomeValuesFrom>
-            <DataProperty IRI="#d_id"/>
             <Datatype abbreviatedIRI="rdfs:Literal"/>
         </DataSomeValuesFrom>
     </SubClassOf>
@@ -429,13 +364,6 @@
     <SubClassOf>
         <Class IRI="#PointOfInterest"/>
         <DataSomeValuesFrom>
-            <DataProperty IRI="#p_id"/>
-            <Datatype abbreviatedIRI="rdfs:Literal"/>
-        </DataSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#PointOfInterest"/>
-        <DataSomeValuesFrom>
             <DataProperty IRI="#p_image_url"/>
             <Datatype abbreviatedIRI="rdfs:Literal"/>
         </DataSomeValuesFrom>
@@ -474,13 +402,6 @@
             <ObjectProperty IRI="#trainStationIn"/>
             <Class abbreviatedIRI="owl:Thing"/>
         </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#TrainStation"/>
-        <DataSomeValuesFrom>
-            <DataProperty IRI="#ts_id"/>
-            <Datatype abbreviatedIRI="rdfs:Literal"/>
-        </DataSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#TrainStation"/>
@@ -705,14 +626,6 @@
         <Class IRI="#District"/>
     </ObjectPropertyRange>
     <DataPropertyDomain>
-        <DataProperty IRI="#bl_id"/>
-        <Class IRI="#BusLine"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty IRI="#bp_id"/>
-        <Class IRI="#BikeParking"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
         <DataProperty IRI="#bp_location"/>
         <Class IRI="#BikeParking"/>
     </DataPropertyDomain>
@@ -733,10 +646,6 @@
         <Class IRI="#BikeRental"/>
     </DataPropertyDomain>
     <DataPropertyDomain>
-        <DataProperty IRI="#br_id"/>
-        <Class IRI="#BikeRental"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
         <DataProperty IRI="#br_location"/>
         <Class IRI="#BikeRental"/>
     </DataPropertyDomain>
@@ -751,10 +660,6 @@
     <DataPropertyDomain>
         <DataProperty IRI="#br_website"/>
         <Class IRI="#BikeRental"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty IRI="#bs_id"/>
-        <Class IRI="#BusStop"/>
     </DataPropertyDomain>
     <DataPropertyDomain>
         <DataProperty IRI="#bs_location"/>
@@ -773,10 +678,6 @@
         <Class IRI="#CarParking"/>
     </DataPropertyDomain>
     <DataPropertyDomain>
-        <DataProperty IRI="#cp_id"/>
-        <Class IRI="#CarParking"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
         <DataProperty IRI="#cp_location"/>
         <Class IRI="#CarParking"/>
     </DataPropertyDomain>
@@ -790,10 +691,6 @@
     </DataPropertyDomain>
     <DataPropertyDomain>
         <DataProperty IRI="#d_area"/>
-        <Class IRI="#District"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty IRI="#d_id"/>
         <Class IRI="#District"/>
     </DataPropertyDomain>
     <DataPropertyDomain>
@@ -817,10 +714,6 @@
         <Class IRI="#PointOfInterest"/>
     </DataPropertyDomain>
     <DataPropertyDomain>
-        <DataProperty IRI="#p_id"/>
-        <Class IRI="#PointOfInterest"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
         <DataProperty IRI="#p_image_url"/>
         <Class IRI="#PointOfInterest"/>
     </DataPropertyDomain>
@@ -841,10 +734,6 @@
         <Class IRI="#PointOfInterest"/>
     </DataPropertyDomain>
     <DataPropertyDomain>
-        <DataProperty IRI="#ts_id"/>
-        <Class IRI="#TrainStation"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
         <DataProperty IRI="#ts_location"/>
         <Class IRI="#TrainStation"/>
     </DataPropertyDomain>
@@ -852,14 +741,6 @@
         <DataProperty IRI="#ts_name"/>
         <Class IRI="#TrainStation"/>
     </DataPropertyDomain>
-    <DataPropertyRange>
-        <DataProperty IRI="#bl_id"/>
-        <Datatype abbreviatedIRI="xsd:integer"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty IRI="#bp_id"/>
-        <Datatype abbreviatedIRI="xsd:integer"/>
-    </DataPropertyRange>
     <DataPropertyRange>
         <DataProperty IRI="#bp_location"/>
         <Datatype abbreviatedIRI="xsd:string"/>
@@ -881,10 +762,6 @@
         <Datatype abbreviatedIRI="xsd:string"/>
     </DataPropertyRange>
     <DataPropertyRange>
-        <DataProperty IRI="#br_id"/>
-        <Datatype abbreviatedIRI="xsd:integer"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
         <DataProperty IRI="#br_location"/>
         <Datatype abbreviatedIRI="xsd:string"/>
     </DataPropertyRange>
@@ -899,10 +776,6 @@
     <DataPropertyRange>
         <DataProperty IRI="#br_website"/>
         <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty IRI="#bs_id"/>
-        <Datatype abbreviatedIRI="xsd:integer"/>
     </DataPropertyRange>
     <DataPropertyRange>
         <DataProperty IRI="#bs_location"/>
@@ -921,10 +794,6 @@
         <Datatype abbreviatedIRI="xsd:string"/>
     </DataPropertyRange>
     <DataPropertyRange>
-        <DataProperty IRI="#cp_id"/>
-        <Datatype abbreviatedIRI="xsd:integer"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
         <DataProperty IRI="#cp_location"/>
         <Datatype abbreviatedIRI="xsd:string"/>
     </DataPropertyRange>
@@ -939,10 +808,6 @@
     <DataPropertyRange>
         <DataProperty IRI="#d_area"/>
         <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty IRI="#d_id"/>
-        <Datatype abbreviatedIRI="xsd:integer"/>
     </DataPropertyRange>
     <DataPropertyRange>
         <DataProperty IRI="#d_name"/>
@@ -965,10 +830,6 @@
         <Datatype abbreviatedIRI="xsd:string"/>
     </DataPropertyRange>
     <DataPropertyRange>
-        <DataProperty IRI="#p_id"/>
-        <Datatype abbreviatedIRI="xsd:integer"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
         <DataProperty IRI="#p_image_url"/>
         <Datatype abbreviatedIRI="xsd:string"/>
     </DataPropertyRange>
@@ -987,10 +848,6 @@
     <DataPropertyRange>
         <DataProperty IRI="#p_website"/>
         <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty IRI="#ts_id"/>
-        <Datatype abbreviatedIRI="xsd:integer"/>
     </DataPropertyRange>
     <DataPropertyRange>
         <DataProperty IRI="#ts_location"/>
