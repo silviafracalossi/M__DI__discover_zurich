@@ -1,2 +1,11 @@
 datasets/*
 log/*
+python_elaboration/__pycache__/*
+
+# Idea files
+.idea/*
+target/*
+
+# Tutorials
+src/main/java/Lab07Test/*
+src/main/java/UI/*
