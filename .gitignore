@@ -1,4 +1,3 @@
-datasets/*
 log/*
 python_elaboration/__pycache__/*
 
@@ -9,3 +8,5 @@ target/*
 # Tutorials
 src/main/java/Lab07Test/*
 src/main/java/UI/*
+garbage/*
+NOTES.md
