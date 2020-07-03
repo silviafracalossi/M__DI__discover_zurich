@@ -1,0 +1,35 @@
+district,name,neighbourhoods
+1,Altstadt,Rathaus
+1,Altstadt,Hochschulen
+1,Altstadt,Lindenhof
+1,Altstadt,City
+2,,Wollihofen
+2,,Leimbach
+2,,Enge
+3,Wiedikon,Alt-Wiedikon
+3,Wiedikon,Friesenberg
+3,Wiedikon,Sihlfeld
+4,Aussersihl,Werd
+4,Aussersihl,Langstrasse
+4,Aussersihl,Hard
+5,Industriequartier,Gewerbeschule
+5,Industriequartier,Escher Wyss
+6,,Unterstrass
+6,,Oberstrass
+7,,Fluntern
+7,,Hottingen
+7,,Hirslanden
+7,,Witikon
+8,Riesbach,Seefeld
+8,Riesbach,Mühlebach
+8,Riesbach,Weinegg
+9,,Albisrieden
+9,,Altstetten
+10,,Höngg
+10,,Wipkingen
+11,,Affoltern
+11,,Oerlikon
+11,,Seebach
+12,Schwamendingen,Saatlen
+12,,Schwamendingen Mitte
+12,,Hirzenbach

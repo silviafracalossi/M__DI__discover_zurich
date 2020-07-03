@@ -30,3 +30,26 @@ def string_to_polygon(polygon_text):
         result.append(tuple([float(i) for i in coordinates]))
 
     return Polygon(result)
+
+
+# Converting string coordinates into a point
+def string_to_point(point_text):
+
+    point_text = point_text.replace("POINT ", "").replace("(", "").replace(")", "")
+    coordinates = point_text.split(" ")
+
+    return convert_point(Point(float(coordinates[0]), float(coordinates[1])))
+
+
+# Converting the point in the used format
+def convert_point(original_point):
+    geo_df = gpd.GeoDataFrame([],
+        geometry=gpd.GeoSeries(original_point))
+    geo_df.crs = 'epsg:2056'
+    geo_df = geo_df.to_crs('epsg:4326')
+    location_points = geo_df['geometry'].iloc[0]
+
+    # Setting latitude first and returning point
+    fixed_coordinates = str(location_points).replace("POINT ", "").replace("(", "").replace(")", "").split(" ")
+
+    return Point(float(fixed_coordinates[1]), float(fixed_coordinates[0]))
