@@ -7,10 +7,12 @@
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      ontologyIRI="http://www.semanticweb.org/silvia/ontologies/2020/5/untitled-ontology-13">
     <Prefix name="" IRI="http://www.semanticweb.org/silvia/ontologies/2020/5/untitled-ontology-13#"/>
+    <Prefix name="geo" IRI="http://www.opengis.net/ont/geosparql#"/>
     <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
     <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
     <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
     <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="geof" IRI="http://www.opengis.net/ont/geosparql/function/"/>
     <Prefix name="obda" IRI="https://w3id.org/obda/vocabulary#"/>
     <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
     <Declaration>
@@ -63,6 +65,9 @@
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#trainStationIn"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="geo:asWKT"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#bp_location"/>
@@ -141,9 +146,6 @@
     </Declaration>
     <Declaration>
         <DataProperty IRI="#p_opening_hours"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#p_website"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#ts_location"/>
@@ -386,13 +388,6 @@
         <Class IRI="#PointOfInterest"/>
         <DataSomeValuesFrom>
             <DataProperty IRI="#p_opening_hours"/>
-            <Datatype abbreviatedIRI="rdfs:Literal"/>
-        </DataSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#PointOfInterest"/>
-        <DataSomeValuesFrom>
-            <DataProperty IRI="#p_website"/>
             <Datatype abbreviatedIRI="rdfs:Literal"/>
         </DataSomeValuesFrom>
     </SubClassOf>
@@ -730,10 +725,6 @@
         <Class IRI="#PointOfInterest"/>
     </DataPropertyDomain>
     <DataPropertyDomain>
-        <DataProperty IRI="#p_website"/>
-        <Class IRI="#PointOfInterest"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
         <DataProperty IRI="#ts_location"/>
         <Class IRI="#TrainStation"/>
     </DataPropertyDomain>
@@ -778,10 +769,6 @@
         <Datatype abbreviatedIRI="xsd:string"/>
     </DataPropertyRange>
     <DataPropertyRange>
-        <DataProperty IRI="#bs_location"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
         <DataProperty IRI="#bs_name"/>
         <Datatype abbreviatedIRI="xsd:string"/>
     </DataPropertyRange>
@@ -804,10 +791,6 @@
     <DataPropertyRange>
         <DataProperty IRI="#cp_spaces_no"/>
         <Datatype abbreviatedIRI="xsd:integer"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty IRI="#d_area"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
     </DataPropertyRange>
     <DataPropertyRange>
         <DataProperty IRI="#d_name"/>
@@ -843,10 +826,6 @@
     </DataPropertyRange>
     <DataPropertyRange>
         <DataProperty IRI="#p_opening_hours"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty IRI="#p_website"/>
         <Datatype abbreviatedIRI="xsd:string"/>
     </DataPropertyRange>
     <DataPropertyRange>

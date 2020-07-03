@@ -1,0 +1,21 @@
+[PrefixDeclaration]
+:		http://www.semanticweb.org/silvia/ontologies/2020/5/untitled-ontology-13#
+geo:		http://www.opengis.net/ont/geosparql#
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:		http://www.w3.org/XML/1998/namespace
+xsd:		http://www.w3.org/2001/XMLSchema#
+geof:		http://www.opengis.net/ont/geosparql/function/
+obda:		https://w3id.org/obda/vocabulary#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+
+[MappingDeclaration] @collection [[
+mappingId	District
+target		:data/District/{knr} a :District ; :d_name {kname}^^xsd:string ; :d_area {proper_geom}^^geo:wktLiteral ; geo:asWKT {proper_geom}^^geo:wktLiteral . 
+source		SELECT *, ST_AsText(ST_QuantizeCoordinates(geometry, 4)) AS proper_geom FROM districts
+
+mappingId	SpecialBus - Experiment
+target		:data/BusStop/{id} a :BusStop ; :bs_name {name}^^xsd:string ; :bs_location {proper_geom}^^geo:wktLiteral ; geo:asWKT "POINT ({lat} {lng})"^^geo:wktLiteral . 
+source		SELECT *,ST_AsText(ST_QuantizeCoordinates(point, 4)) AS proper_geom FROM special_bus
+]]
+
