@@ -2,6 +2,10 @@
 import com.esri.arcgisruntime.geometry.*;
 import com.esri.arcgisruntime.mapping.view.Callout;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -87,7 +91,7 @@ public class MainWindow extends Application {
         // Setting the stage of the visualization
         general_stage.setTitle("Explore Zurich");
         general_stage.setWidth(1000);
-        general_stage.setHeight(600);
+        general_stage.setHeight(650);
         general_stage.setScene(scene);
         general_stage.show();
 
@@ -104,28 +108,29 @@ public class MainWindow extends Application {
         setupFilterPanel(filters);
 
         // Retrieving the markers and visualizing them on the map
-//        if(this.filters.compareTo("") != 0) {
-//            markers_set = dl.getMarkerData(district_id, filters);
-//
-//            if (markers_set != null) {
-//                addMarkers();
-//            }
-//        }
+        if(this.filters.compareTo("") != 0) {
+            markers_set = dl.getMarkerData(district_id, filters);
+
+            if (markers_set != null) {
+                addMarkers();
+            }
+        }
 
         // Preparing the home - Normal Setting
         if (filters.compareTo("") == 0) {
             System.out.println("[INFO] Showing normal visualization");
-            List<BindingSet> districts_results = dl.getDistrictAreas();
-            if (districts_results != null) {
-                addDistricts(districts_results);
-            }
+            // TODO decomment
+//            List<BindingSet> districts_results = dl.getDistrictAreas();
+//            if (districts_results != null) {
+//                addDistricts(districts_results);
+//            }
         } else {
 
-//            // Preparing the home - Display District
-//            if (filters.contains("d")) {
-//                System.out.println("[INFO] Visualizing district");
-//                addSingleDistrict(selected_district);
-//            }
+            // Preparing the home - Display District
+            if (filters.contains("d")) {
+                System.out.println("[INFO] Visualizing district");
+                addSingleDistrict(selected_district);
+            }
         }
 
 //        // Get the map view's callout
@@ -209,7 +214,7 @@ public class MainWindow extends Application {
         controlsVBox = new VBox(6);
         controlsVBox.setBackground(new Background(new BackgroundFill(Paint.valueOf("rgba(0,0,0,0.5)"),
                 CornerRadii.EMPTY, Insets.EMPTY)));
-        controlsVBox.setPadding(new Insets(10.0));
+        controlsVBox.setPadding(new Insets(7.0));
         controlsVBox.setMaxSize(260, 120);
         controlsVBox.getStyleClass().add("panel-region");
 
@@ -222,7 +227,7 @@ public class MainWindow extends Application {
         // Adding the header box
         HBox title_box = new HBox(10);
         title_box.setAlignment(Pos.CENTER);
-        title_box.setPadding(new Insets(10.0));
+        title_box.setPadding(new Insets(7.0));
         title_box.getChildren().addAll(title);
 
         // =======================Creating the District label=============================
@@ -242,76 +247,192 @@ public class MainWindow extends Application {
         HBox district_box = new HBox(10);
         district_box.setAlignment(Pos.CENTER);
         district_box.getChildren().addAll(district_label, district_choice_box);
-        district_box.setPadding(new Insets(10.0));
+        district_box.setPadding(new Insets(7.0));
 
-        // =======================Creating the Include part===============================
-        Label include_label = new Label("Include facilities:");
-        include_label.setFont(new Font("Arial", 15));
-        include_label.setAlignment(Pos.TOP_LEFT);
-        include_label.setStyle("-fx-text-fill: white;");
+        // =======================Creating the Visualize part===============================
+        Label visualize_label = new Label("Visualize the locations for:");
+        visualize_label.setFont(new Font("Arial", 15));
+        visualize_label.setAlignment(Pos.TOP_LEFT);
+        visualize_label.setStyle("-fx-text-fill: white;");
+        visualize_label.setPadding(new Insets(0,0,7,0));
 
-        // Add Public Transportation check
-        CheckBox pubtrans_check = new CheckBox("Public Transportation");
-        pubtrans_check.setFont(new Font("Arial", 15));
-        pubtrans_check.setAlignment(Pos.CENTER_LEFT);
-        pubtrans_check.setStyle("-fx-text-fill: white;");
-
-        // Add Parking check
+        // ==============Parking checks
         CheckBox parking_check = new CheckBox("Parking");
         parking_check.setFont(new Font("Arial", 15));
         parking_check.setAlignment(Pos.CENTER_LEFT);
         parking_check.setStyle("-fx-text-fill: white;");
-        parking_check.setPadding(new Insets(0,0,10,0));
+        parking_check.setPadding(new Insets(0,0,0,10));
 
+        CheckBox car_parking_check = new CheckBox("Car Parking");
+        car_parking_check.setFont(new Font("Arial", 15));
+        car_parking_check.setAlignment(Pos.CENTER_LEFT);
+        car_parking_check.setStyle("-fx-text-fill: white;");
+        car_parking_check.setPadding(new Insets(0,0,0,20));
 
-        // =======================Creating the POIs part===============================
-        Label pois_label = new Label("Include Points of Interest:");
-        pois_label.setFont(new Font("Arial", 15));
-        pois_label.setAlignment(Pos.TOP_LEFT);
-        pois_label.setStyle("-fx-text-fill: white;");
+        CheckBox bike_parking_check = new CheckBox("Bike Parking");
+        bike_parking_check.setFont(new Font("Arial", 15));
+        bike_parking_check.setAlignment(Pos.CENTER_LEFT);
+        bike_parking_check.setStyle("-fx-text-fill: white;");
+        bike_parking_check.setPadding(new Insets(0,0,10,20));
 
-        // Add Restaurant check
+        // ================Public Transportation
+        CheckBox train_station_check = new CheckBox("Train Station");
+        train_station_check.setFont(new Font("Arial", 15));
+        train_station_check.setAlignment(Pos.CENTER_LEFT);
+        train_station_check.setStyle("-fx-text-fill: white;");
+        train_station_check.setPadding(new Insets(0,0,0,10));
+
+        CheckBox bus_stop_check = new CheckBox("Bus Stop");
+        bus_stop_check.setFont(new Font("Arial", 15));
+        bus_stop_check.setAlignment(Pos.CENTER_LEFT);
+        bus_stop_check.setStyle("-fx-text-fill: white;");
+        bus_stop_check.setPadding(new Insets(0,0,0,10));
+
+        // ================Bike Rental
+        CheckBox bike_rental_check = new CheckBox("Bike Rental");
+        bike_rental_check.setFont(new Font("Arial", 15));
+        bike_rental_check.setAlignment(Pos.CENTER_LEFT);
+        bike_rental_check.setStyle("-fx-text-fill: white;");
+        bike_rental_check.setPadding(new Insets(0,0,10,10));
+
+        // ================Point Of Interest
+        CheckBox poi_check = new CheckBox("Points Of Interest");
+        poi_check.setFont(new Font("Arial", 15));
+        poi_check.setAlignment(Pos.CENTER_LEFT);
+        poi_check.setStyle("-fx-text-fill: white;");
+        poi_check.setPadding(new Insets(0,0,0,10));
+
         CheckBox restaurant_check = new CheckBox("Restaurants");
         restaurant_check.setFont(new Font("Arial", 15));
         restaurant_check.setAlignment(Pos.CENTER_LEFT);
         restaurant_check.setStyle("-fx-text-fill: white;");
+        restaurant_check.setPadding(new Insets(0,0,0,20));
 
         // Add Bar check
         CheckBox bar_check = new CheckBox("Bar");
         bar_check.setFont(new Font("Arial", 15));
         bar_check.setAlignment(Pos.CENTER_LEFT);
         bar_check.setStyle("-fx-text-fill: white;");
+        bar_check.setPadding(new Insets(0,0,0,20));
 
         // Add Museum check
         CheckBox museum_check = new CheckBox("Museum");
         museum_check.setFont(new Font("Arial", 15));
         museum_check.setAlignment(Pos.CENTER_LEFT);
         museum_check.setStyle("-fx-text-fill: white;");
+        museum_check.setPadding(new Insets(0,0,0,20));
 
         // Add Bar check
         CheckBox attraction_check = new CheckBox("Attraction");
         attraction_check.setFont(new Font("Arial", 15));
         attraction_check.setAlignment(Pos.CENTER_LEFT);
         attraction_check.setStyle("-fx-text-fill: white;");
+        attraction_check.setPadding(new Insets(0,0,0,20));
 
         // Add Shop check
         CheckBox shop_check = new CheckBox("Shop");
         shop_check.setFont(new Font("Arial", 15));
         shop_check.setAlignment(Pos.CENTER_LEFT);
         shop_check.setStyle("-fx-text-fill: white;");
-        shop_check.setPadding(new Insets(0,0,10,0));
+        shop_check.setPadding(new Insets(0,0,10,20));
 
+        // ================= Listener for parking check box.
+        parking_check.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue ov, Boolean old_val, Boolean new_val) {
+                if (new_val == true) {
+                    car_parking_check.setSelected(true);
+                    bike_parking_check.setSelected(true);
+                }
+
+                car_parking_check.setDisable(new_val);
+                bike_parking_check.setDisable(new_val);
+            }
+        });
+        car_parking_check.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue ov, Boolean old_val, Boolean new_val) {
+                if (new_val == true && bike_parking_check.isSelected()) {
+                    car_parking_check.setDisable(new_val);
+                    bike_parking_check.setDisable(new_val);
+                    parking_check.setSelected(true);
+                }
+            }
+        });
+        bike_parking_check.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue ov, Boolean old_val, Boolean new_val) {
+                if (new_val == true && car_parking_check.isSelected()) {
+                    car_parking_check.setDisable(new_val);
+                    bike_parking_check.setDisable(new_val);
+                    parking_check.setSelected(true);
+                }
+            }
+        });
+
+        // ================= Listener for Point of Interest checkbox.
+        poi_check.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue ov, Boolean old_val, Boolean new_val) {
+                if (new_val == true) {
+                    restaurant_check.setSelected(true);
+                    bar_check.setSelected(true);
+                    museum_check.setSelected(true);
+                    attraction_check.setSelected(true);
+                    shop_check.setSelected(true);
+                }
+
+                restaurant_check.setDisable(new_val);
+                bar_check.setDisable(new_val);
+                museum_check.setDisable(new_val);
+                attraction_check.setDisable(new_val);
+                shop_check.setDisable(new_val);
+            }
+        });
+        restaurant_check.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue ov, Boolean old_val, Boolean new_val) {
+                checkAndDisable(restaurant_check, bar_check, museum_check,
+                        attraction_check, shop_check, poi_check);
+            }
+        });
+        bar_check.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue ov, Boolean old_val, Boolean new_val) {
+                checkAndDisable(restaurant_check, bar_check, museum_check,
+                        attraction_check, shop_check, poi_check);
+            }
+        });
+        museum_check.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue ov, Boolean old_val, Boolean new_val) {
+                checkAndDisable(restaurant_check, bar_check, museum_check,
+                        attraction_check, shop_check, poi_check);
+            }
+        });
+        attraction_check.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue ov, Boolean old_val, Boolean new_val) {
+                checkAndDisable(restaurant_check, bar_check, museum_check,
+                        attraction_check, shop_check, poi_check);
+            }
+        });
+        shop_check.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue ov, Boolean old_val, Boolean new_val) {
+                checkAndDisable(restaurant_check, bar_check, museum_check,
+                        attraction_check, shop_check, poi_check);
+            }
+        });
 
         // ======================Handling previous filter=================================
 
         // Sets checks as selected if they were in the previous interface
-        pubtrans_check.setSelected(filters.contains("t"));
         parking_check.setSelected(filters.contains("p"));
-        restaurant_check.setSelected(filters.contains("r"));
-        bar_check.setSelected(filters.contains("b"));
-        museum_check.setSelected(filters.contains("m"));
-        attraction_check.setSelected(filters.contains("a"));
-        shop_check.setSelected(filters.contains("s"));
+        car_parking_check.setSelected(filters.contains("p") || filters.contains("c"));
+        bike_parking_check.setSelected(filters.contains("p") || filters.contains("k"));
+
+        train_station_check.setSelected(filters.contains("t"));
+        bus_stop_check.setSelected(filters.contains("u"));
+        bike_rental_check.setSelected(filters.contains("e"));
+
+        poi_check.setSelected(filters.contains("i"));
+        restaurant_check.setSelected(filters.contains("r") || filters.contains("i"));
+        bar_check.setSelected(filters.contains("b") || filters.contains("i"));
+        museum_check.setSelected(filters.contains("m") || filters.contains("i"));
+        attraction_check.setSelected(filters.contains("a") || filters.contains("i"));
+        shop_check.setSelected(filters.contains("s") || filters.contains("i"));
 
         // Sets default value
         if (filters.contains("d")) {
@@ -319,7 +440,6 @@ public class MainWindow extends Application {
         } else {
             district_choice_box.setValue("");
         }
-
 
         // ======================Creating the filter button=================================
         Button filter_button = new Button("Apply Filter");
@@ -329,71 +449,94 @@ public class MainWindow extends Application {
         // Setting the commands for the filtering option
         filter_button.setOnAction(e -> {
 
-            System.out.println("Code to be configured");
+            System.out.println("---------------Processing the filtering request------------------");
 
-//            System.out.println("---------------Processing the filtering request------------------");
-//
-//            // Setting filters to empty
-//            this.filters = "";
-//
-//            // Retrieve district selected data
-//            String district_chosen = (String) district_choice_box.getValue();
-//            if (district_chosen != null && district_chosen != "") {
-//                int new_district_id = parseInt(district_chosen.substring(9));
-//
-//                if (new_district_id != district_id) {
-//                    district_id = new_district_id;
-//                    selected_district = dl.getDistrictById(district_id);
-//                }
-//
-//                // Setting the filter variables
-//                this.filters += "d";
-//            } else {
-//                district_id = 0;
-//                selected_district = null;
-//            }
-//
-//            // Retrieving the selected checkboxes
-//            this.filters += (pubtrans_check.isSelected()) ? "t" : "";
-//            this.filters += (parking_check.isSelected()) ? "p" : "";
-//            this.filters += (restaurant_check.isSelected()) ? "r" : "";
-//            this.filters += (bar_check.isSelected()) ? "b" : "";
-//            this.filters += (museum_check.isSelected()) ? "m" : "";
-//            this.filters += (attraction_check.isSelected()) ? "a" : "";
-//            this.filters += (shop_check.isSelected()) ? "s" : "";
-//
-//            // Restart the window
-//            startWindow();
+            // Setting filters to empty
+            this.filters = "";
+
+            // Retrieve district selected data
+            String district_chosen = (String) district_choice_box.getValue();
+            if (district_chosen != null && district_chosen != "") {
+                int new_district_id = parseInt(district_chosen.substring(9));
+
+                if (new_district_id != district_id) {
+                    district_id = new_district_id;
+                    selected_district = dl.getDistrictById(district_id);
+                }
+
+                // Setting the filter variables
+                this.filters += "d";
+            } else {
+                district_id = 0;
+                selected_district = null;
+            }
+
+            // Retrieving the selected checkboxes
+            this.filters += (parking_check.isSelected()) ? "p" : "";
+            this.filters += (car_parking_check.isSelected() && !parking_check.isSelected()) ? "c" : "";
+            this.filters += (bike_parking_check.isSelected() && !parking_check.isSelected()) ? "k" : "";
+
+            this.filters += (train_station_check.isSelected()) ? "t" : "";
+            this.filters += (bus_stop_check.isSelected()) ? "u" : "";
+            this.filters += (bike_rental_check.isSelected()) ? "e" : "";
+
+            this.filters += (poi_check.isSelected()) ? "i" : "";
+            this.filters += (restaurant_check.isSelected() && !poi_check.isSelected()) ? "r" : "";
+            this.filters += (bar_check.isSelected() && !poi_check.isSelected()) ? "b" : "";
+            this.filters += (museum_check.isSelected() && !poi_check.isSelected()) ? "m" : "";
+            this.filters += (attraction_check.isSelected() && !poi_check.isSelected()) ? "a" : "";
+            this.filters += (shop_check.isSelected() && !poi_check.isSelected()) ? "s" : "";
+
+            // Restart the window
+            startWindow();
         });
 
         // Adding all the elements to the panel
-        controlsVBox.getChildren().addAll(title_box, district_box,                             // district opinion
-                include_label, pubtrans_check, parking_check,                                           // facilities option
-                pois_label, restaurant_check, bar_check, museum_check, attraction_check, shop_check,    // pois option
-                filter_button);                                                                         // filter button
+        controlsVBox.getChildren().addAll(title_box, district_box, visualize_label,
+                parking_check, car_parking_check, bike_parking_check,
+                train_station_check, bus_stop_check, bike_rental_check,
+                poi_check, restaurant_check, bar_check, museum_check, attraction_check, shop_check,
+                filter_button);
     }
 
-//    // Showing markers on the map
-//    private void addMarkers() {
-//        for (BindingSet bs: markers_set) {
-//            addSingleMarker(bs);
-//        }
-//    }
-//
-//    // Adding the specified marker to graphics
-//    private void addSingleMarker(BindingSet marker) {
-//        if (graphicsOverlay != null) {
-//            SimpleMarkerSymbol pointSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.Style.CIRCLE, hexRed, 10.0f);
-//
-//            // Set different color for different marker
-//            String iri = marker.getBinding("iri").getValue().toString();
-//            String[] splitted_IRI = iri.split("/");
-//            String instance_class = splitted_IRI[4];
-//            pointSymbol.setOutline(new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, hexBlue, 2.0f));
-//            Point point = point_from_string(Literals.getLabel(marker.getValue("locat"), ""));
-//            graphicsOverlay.getGraphics().add(new Graphic (point, pointSymbol));
-//        }
-//    }
+    // Applies the disabling of the checkbox based on the selected ones
+    private void checkAndDisable(CheckBox restaurant_check, CheckBox bar_check, CheckBox museum_check,
+                                 CheckBox attraction_check, CheckBox shop_check, CheckBox poi_check) {
+        if (restaurant_check.isSelected() &&
+                bar_check.isSelected() &&
+                museum_check.isSelected() &&
+                attraction_check.isSelected()) {
+            restaurant_check.setDisable(true);
+            bar_check.setDisable(true);
+            museum_check.setDisable(true);
+            attraction_check.setDisable(true);
+            shop_check.setDisable(true);
+            poi_check.setSelected(true);
+        }
+
+    }
+
+    // Showing markers on the map
+    private void addMarkers() {
+        for (BindingSet bs: markers_set) {
+            addSingleMarker(bs);
+        }
+    }
+
+    // Adding the specified marker to graphics
+    private void addSingleMarker(BindingSet marker) {
+        if (graphicsOverlay != null) {
+            SimpleMarkerSymbol pointSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.Style.CIRCLE, hexRed, 10.0f);
+
+            // Set different color for different marker
+            String iri = marker.getBinding("iri").getValue().toString();
+            String[] splitted_IRI = iri.split("/");
+            String instance_class = splitted_IRI[4];
+            pointSymbol.setOutline(new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, hexBlue, 2.0f));
+            Point point = point_from_string(Literals.getLabel(marker.getValue("locat"), ""));
+            graphicsOverlay.getGraphics().add(new Graphic (point, pointSymbol));
+        }
+    }
 
     // Retrieving District polygons and showing them on the map
     private void addDistricts(List<BindingSet> districts_data) {
@@ -419,11 +562,12 @@ public class MainWindow extends Application {
         PointCollection polygonPoints = new PointCollection(SpatialReferences.getWgs84());
 
         // Fixing the text structure
-        text = text.replace("POLYGON ((", "");
+        text = text.replace("POLYGON", "");
+        text = text.replace("((", "");
         text = text.replace("))", "");
 
         // Iterating through polygon coordinates
-        String[] coordinate_pairs = text.split(", ");
+        String[] coordinate_pairs = text.split(",");
         for (int i=0; i<coordinate_pairs.length; i++) {
             String[] coordinates = coordinate_pairs[i].split(" ");
             polygonPoints.add(new com.esri.arcgisruntime.geometry.Point(
@@ -435,19 +579,26 @@ public class MainWindow extends Application {
         return new Polygon(polygonPoints);
     }
 
-//    // Converting polygon retrieved in string format to actual polygon
-//    private Point point_from_string (String text) {
-//
-//        // Fixing the text structure
-//        text = text.replace("POINT (", "");
-//        text = text.replace(")", "");
-//        String[] coordinate_pairs = text.split(" ");
-//
-//        // Creating and returning point
-//        return new Point(Double.parseDouble(coordinate_pairs[1]),
-//                Double.parseDouble(coordinate_pairs[0]),
-//                SpatialReferences.getWgs84());
-//    }
+    // Converting polygon retrieved in string format to actual polygon
+    private Point point_from_string (String text) {
+
+        // Fixing the text structure
+        text = text.replace("POINT", "");
+        text = text.replace("(", "");
+        text = text.replace(")", "");
+
+        // Checking if empty characters are saved
+        if (text.charAt(0) == ' ') {
+            text = text.substring(1);
+        }
+
+        String[] coordinate_pairs = text.split(" ");
+
+        // Creating and returning point
+        return new Point(Double.parseDouble(coordinate_pairs[1]),
+                Double.parseDouble(coordinate_pairs[0]),
+                SpatialReferences.getWgs84());
+    }
 
 //    // Creating the popup after mouse click
 //    private void createPopUp(BindingSet marker, Callout callout, Point mapPoint) {
