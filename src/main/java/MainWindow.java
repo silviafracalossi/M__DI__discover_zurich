@@ -35,7 +35,10 @@ import javafx.scene.layout.VBox;
 
 import javafx.util.Duration;
 import org.eclipse.rdf4j.model.util.Literals;
+import org.eclipse.rdf4j.query.Binding;
 import org.eclipse.rdf4j.query.BindingSet;
+
+import java.util.Iterator;
 import java.util.List;
 import static java.lang.Integer.parseInt;
 
@@ -49,6 +52,7 @@ public class MainWindow extends Application {
 
     // Variables to manage filters
     private String filters = "";
+    private String neighbourhood_info = "-";
     private BindingSet selected_district;
     private List<BindingSet> markers_set;
     private int district_id;
@@ -119,11 +123,10 @@ public class MainWindow extends Application {
         // Preparing the home - Normal Setting
         if (filters.compareTo("") == 0) {
             System.out.println("[INFO] Showing normal visualization");
-            // TODO decomment
-//            List<BindingSet> districts_results = dl.getDistrictAreas();
-//            if (districts_results != null) {
-//                addDistricts(districts_results);
-//            }
+            List<BindingSet> districts_results = dl.getDistrictAreas();
+            if (districts_results != null) {
+                addDistricts(districts_results);
+            }
         } else {
 
             // Preparing the home - Display District
@@ -133,55 +136,55 @@ public class MainWindow extends Application {
             }
         }
 
-//        // Get the map view's callout
-//        Callout callout = mapView.getCallout();
-//        mapView.setOnMouseClicked(e -> {
-//
-//            // check that the primary mouse button was clicked and user is not panning
-//            if (e.getButton() == MouseButton.PRIMARY && e.isStillSincePress()) {
-//
-//                // create a point from where the user clicked and create a map point from a point
-//                Point2D point = new Point2D(e.getX(), e.getY());
-//                Point mapPoint = mapView.screenToLocation(point);
-//
-//                // Converting into lat lon coordinates
-//                String latLonDecimalDegrees = CoordinateFormatter.toLatitudeLongitude(mapPoint, CoordinateFormatter
-//                        .LatitudeLongitudeFormat.DECIMAL_DEGREES, 4);
-//
-//                // Splitting location into lat and lon
-//                String coordinates[] = latLonDecimalDegrees.split(" ");
-//                Double lat = Double.parseDouble(coordinates[0].substring(0, coordinates[0].length() - 1));
-//                Double lon = Double.parseDouble(coordinates[1].substring(0, coordinates[1].length() - 1));
-//
-//                // Check closest point
-//                double error = 0.0005;
-//                if (markers_set != null) {
-//                    BindingSet correct_marker = null;
-//
-//                    // Look for the markers present in the map
-//                    for (BindingSet marker: markers_set) {
-//                        Point marker_location = point_from_string(Literals.getLabel(marker.getValue("locat"), ""));
-//                        double marker_lat = marker_location.getY();
-//                        double marker_lon = marker_location.getX();
-//
-//                        // Check if it is the correct marker
-//                        if (lat+error > marker_lat && lat-error < marker_lat &&
-//                                lon+error > marker_lon && lon-error < marker_lon) {
-//                            correct_marker = marker;
-//                            break;
-//                        }
-//                    }
-//
-//                    // If the point was found among the markers
-//                    if (correct_marker != null) {
-//                        createPopUp(correct_marker, callout, mapPoint);
-//                    }
-//                }
-//
-//            } else if (e.getButton() == MouseButton.SECONDARY && e.isStillSincePress()) {
-//                callout.dismiss();
-//            }
-//        });
+        // Get the map view's callout
+        Callout callout = mapView.getCallout();
+        mapView.setOnMouseClicked(e -> {
+
+            // check that the primary mouse button was clicked and user is not panning
+            if (e.getButton() == MouseButton.PRIMARY && e.isStillSincePress()) {
+
+                // create a point from where the user clicked and create a map point from a point
+                Point2D point = new Point2D(e.getX(), e.getY());
+                Point mapPoint = mapView.screenToLocation(point);
+
+                // Converting into lat lon coordinates
+                String latLonDecimalDegrees = CoordinateFormatter.toLatitudeLongitude(mapPoint, CoordinateFormatter
+                        .LatitudeLongitudeFormat.DECIMAL_DEGREES, 4);
+
+                // Splitting location into lat and lon
+                String coordinates[] = latLonDecimalDegrees.split(" ");
+                Double lat = Double.parseDouble(coordinates[0].substring(0, coordinates[0].length() - 1));
+                Double lon = Double.parseDouble(coordinates[1].substring(0, coordinates[1].length() - 1));
+
+                // Check closest point
+                double error = 0.0005;
+                if (markers_set != null) {
+                    BindingSet correct_marker = null;
+
+                    // Look for the markers present in the map
+                    for (BindingSet marker: markers_set) {
+                        Point marker_location = point_from_string(Literals.getLabel(marker.getValue("locat"), ""));
+                        double marker_lat = marker_location.getY();
+                        double marker_lon = marker_location.getX();
+
+                        // Check if it is the correct marker
+                        if (lat+error > marker_lat && lat-error < marker_lat &&
+                                lon+error > marker_lon && lon-error < marker_lon) {
+                            correct_marker = marker;
+                            break;
+                        }
+                    }
+
+                    // If the point was found among the markers
+                    if (correct_marker != null) {
+                        createPopUp(correct_marker, callout, mapPoint);
+                    }
+                }
+
+            } else if (e.getButton() == MouseButton.SECONDARY && e.isStillSincePress()) {
+                callout.dismiss();
+            }
+        });
 
         // Adding map and control panel to the stack pane
         stackPane.getChildren().addAll(mapView, controlsVBox);
@@ -461,7 +464,9 @@ public class MainWindow extends Application {
 
                 if (new_district_id != district_id) {
                     district_id = new_district_id;
-                    selected_district = dl.getDistrictById(district_id);
+                    List<BindingSet> district_set = dl.getDistrictById(district_id);
+                    neighbourhood_info = getNeighbourhoodInfo(district_set);
+                    selected_district = district_set.get(0);
                 }
 
                 // Setting the filter variables
@@ -469,6 +474,7 @@ public class MainWindow extends Application {
             } else {
                 district_id = 0;
                 selected_district = null;
+                neighbourhood_info = "-";
             }
 
             // Retrieving the selected checkboxes
@@ -491,12 +497,28 @@ public class MainWindow extends Application {
             startWindow();
         });
 
+        // Displaying district info
+        Label current_info = new Label("Neighbourhood info:");
+        current_info.setWrapText(true);
+        current_info.setFont(new Font("Arial", 15));
+        current_info.setAlignment(Pos.CENTER);
+        current_info.setStyle("-fx-text-fill: white;");
+        current_info.setPadding(new Insets(10,0,0,0));
+
+        Label neigh_info = new Label(neighbourhood_info);
+        neigh_info.setWrapText(true);
+        neigh_info.setFont(new Font("Arial", 15));
+        neigh_info.setAlignment(Pos.CENTER);
+        neigh_info.setStyle("-fx-text-fill: white;");
+        neigh_info.setPadding(new Insets(0,0,10,0));
+
+
         // Adding all the elements to the panel
         controlsVBox.getChildren().addAll(title_box, district_box, visualize_label,
                 parking_check, car_parking_check, bike_parking_check,
                 train_station_check, bus_stop_check, bike_rental_check,
                 poi_check, restaurant_check, bar_check, museum_check, attraction_check, shop_check,
-                filter_button);
+                filter_button, current_info, neigh_info);
     }
 
     // Applies the disabling of the checkbox based on the selected ones
@@ -513,7 +535,6 @@ public class MainWindow extends Application {
             shop_check.setDisable(true);
             poi_check.setSelected(true);
         }
-
     }
 
     // Showing markers on the map
@@ -552,6 +573,29 @@ public class MainWindow extends Application {
             SimpleLineSymbol polygonSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, hexBlue, 2.0f);
             graphicsOverlay.getGraphics().add(new Graphic(polygon, polygonSymbol));
         }
+    }
+
+    // Retrieving all the neighbourhoods names
+    private String getNeighbourhoodInfo(List<BindingSet> district_set) {
+        String neigh_list = "";
+        for (BindingSet bs : district_set) {
+            Iterator<Binding> bIter = bs.iterator();
+            String predicate = bIter.next().getValue().toString();
+            String neighbourhood_name = Literals.getLabel(bIter.next().getValue(), "");
+
+            if (neighbourhood_name.compareTo("") != 0) {
+                if (neigh_list.compareTo("") != 0) {
+                    neigh_list += ", ";
+                }
+                neigh_list += neighbourhood_name;
+            }
+        }
+
+        if (neigh_list.compareTo("") == 0) {
+            neigh_list = "N/A";
+        }
+
+        return neigh_list;
     }
 
 
@@ -600,133 +644,61 @@ public class MainWindow extends Application {
                 SpatialReferences.getWgs84());
     }
 
-//    // Creating the popup after mouse click
-//    private void createPopUp(BindingSet marker, Callout callout, Point mapPoint) {
-//
-//        // Retrieve class
-//        String iri = marker.getBinding("iri").getValue().toString();
-//        String[] splitted_IRI = iri.split("/");
-//        String instance_class = splitted_IRI[4];
-//        String uppercase_class = instance_class.substring(0, 1).toUpperCase() + instance_class.substring(1);
-//
-//        // Getting the information needed
-//        if (uppercase_class.compareTo("Restaurant") == 0 ||
-//                uppercase_class.compareTo("Bar") == 0 ||
-//                uppercase_class.compareTo("Attraction") == 0 ||
-//                uppercase_class.compareTo("Shop") == 0 ||
-//                uppercase_class.compareTo("Museum") == 0) {
-//
-//            // Retrieving information
-//            BindingSet full_marker = dl.getPoiByIRI(iri, uppercase_class);
-//            if (full_marker != null) {
-//
-//                // Handling in case the hours are missing
-//                String opening_hours = Literals.getLabel(full_marker.getValue("oh"), "");
-//                if (opening_hours.compareTo("") != 0){
-//                    opening_hours = opening_hours.replace("<p>", "").replace("</p>", "").replace("<b>", "").replace("</b>", "").replace("<br />", "").replace("&ndash;", "-");
-//                } else {
-//                    opening_hours = "not provided.";
-//                }
-//
-//                // Handling in case the hours are missing
-//                String address = Literals.getLabel(full_marker.getValue("addr"), "");
-//                if (address.compareTo("") == 0){
-//                    address = "not provided.";
-//                }
-//
-//                // Creating text
-//                String printed_text = "Name: " + Literals.getLabel(full_marker.getValue("nam"), "") + "\n";
-//                printed_text += "Description: " + Literals.getLabel(full_marker.getValue("descr"), "") + "\n";
-//                printed_text += "Address: " + address + "\n";
-//                printed_text += "Opening Hours: " + opening_hours + "\n";
-//
-//                // Configurating the popup
-//                callout.setTitle(uppercase_class);
-//                callout.setDetail(printed_text);
-//                callout.showCalloutAt(mapPoint, DURATION);
-//            }
-//        }
-//
-//        if (uppercase_class.compareTo("Carparking")  == 0) {
-//
-//            // Retrieving information
-//            BindingSet full_marker = dl.getCarParkingByIRI(iri);
-//
-//            if (full_marker != null) {
-//                // Handling in case the hours are missing
-//                String address = Literals.getLabel(full_marker.getValue("addr"), "");
-//                if (address.compareTo("") == 0) {
-//                    address = "not provided.";
-//                }
-//
-//                // Creating text
-//                String printed_text = "Name: " + Literals.getLabel(full_marker.getValue("nam"), "") + "\n";
-//                printed_text += "Address: " + address + "\n";
-//                printed_text += "Number of Spaces: " + Literals.getLabel(full_marker.getValue("sn"), "") + "\n";
-//
-//                // Configurating the popup
-//                callout.setTitle("CarParking");
-//                callout.setDetail(printed_text);
-//                callout.showCalloutAt(mapPoint, DURATION);
-//            }
-//        }
-//
-//        if (uppercase_class.compareTo("Bikeparking") == 0) {
-//            // Retrieving information
-//            BindingSet full_marker = dl.getBikeParkingByIRI(iri);
-//
-//            if (full_marker != null) {
-//
-//                // Handling in case the hours are missing
-//                String vehicleType = Literals.getLabel(full_marker.getValue("vt"), "");
-//                if (vehicleType.compareTo("both") == 0) {
-//                    vehicleType = "both bike and motorbike.";
-//                }
-//
-//                // Creating text
-//                String printed_text = "Vehicle Type: " + vehicleType + "\n";
-//                printed_text += "Number of Spaces: " + Literals.getLabel(full_marker.getValue("sn"), "") + "\n";
-//
-//                // Configurating the popup
-//                callout.setTitle("BikeParking");
-//                callout.setDetail(printed_text);
-//                callout.showCalloutAt(mapPoint, DURATION);
-//            }
-//        }
-//
-//        if (uppercase_class.compareTo("Busstop") == 0) {
-//            // Retrieving information
-//            BindingSet full_marker = dl.getBusStopByIRI(iri);
-//
-//            if (full_marker != null) {
-//
-//                // Creating text
-//                String printed_text = "Name: " + Literals.getLabel(full_marker.getValue("nam"), "") + "\n";
-//                printed_text += "Bus Stop Type: " + Literals.getLabel(full_marker.getValue("bst"), "") + "\n";
-//
-//                // Configurating the popup
-//                callout.setTitle("BusStop");
-//                callout.setDetail(printed_text);
-//                callout.showCalloutAt(mapPoint, DURATION);
-//            }
-//        }
-//
-//        if (uppercase_class.compareTo("Trainstation") == 0) {
-//            // Retrieving information
-//            BindingSet full_marker = dl.getBusStopByIRI(iri);
-//
-//            if (full_marker != null) {
-//
-//                // Creating text
-//                String printed_text = "Name: " + Literals.getLabel(full_marker.getValue("nam"), "") + "\n";
-//
-//                // Configurating the popup
-//                callout.setTitle("TrainStation");
-//                callout.setDetail(printed_text);
-//                callout.showCalloutAt(mapPoint, DURATION);
-//            }
-//        }
-//    }
+    // Creating the popup after mouse click
+    private void createPopUp(BindingSet marker, Callout callout, Point mapPoint) {
+
+        // Retrieve class
+        String IRI = marker.getBinding("iri").getValue().toString();
+        String[] splitted_IRI = IRI.split("/");
+        String instance_class = splitted_IRI[8];
+
+        // Retrieving the information to be displayed
+        String popup_content = "";
+        List<BindingSet> full_marker = dl.getMarkerByIRI(IRI);
+        for (BindingSet bs : full_marker) {
+            String fixed_predicate = "";
+            String fixed_literal = "";
+
+            Iterator<Binding> bIter = bs.iterator();
+            String predicate = bIter.next().getValue().toString();
+            String literal = Literals.getLabel(bIter.next().getValue(), "");
+
+            if (literal.compareTo("") != 0) {
+                fixed_predicate = fixPredicateFormat(predicate);
+                fixed_literal = fixLiteralFormat(literal);
+
+                if (fixed_predicate.compareTo("Location") != 0) {
+                    popup_content += fixed_predicate + ": " + fixed_literal + "\n";
+                }
+            }
+        }
+
+        if (instance_class.compareTo("BusStop") == 0) {
+            System.out.println("We have to retrieve the lines");
+        }
+
+        // Configurating the popup
+        callout.setTitle(instance_class);
+        callout.setDetail(popup_content);
+        callout.showCalloutAt(mapPoint, DURATION);
+    }
+
+    // Removing useless characters from predicate
+    private String fixPredicateFormat (String raw_format) {
+        String fixed_predicate = raw_format.split("_", 2)[1];
+        fixed_predicate = fixed_predicate.substring(0, 1).toUpperCase() + fixed_predicate.substring(1);
+        fixed_predicate = fixed_predicate.replace("_", " ");
+        return fixed_predicate;
+    }
+
+    private String fixLiteralFormat(String literal) {
+        String fixed_literal = literal.replace("<p>", "");
+        fixed_literal = fixed_literal.replace("</p>", "");
+        fixed_literal = fixed_literal.replace("<br />", "");
+        fixed_literal = fixed_literal.replace("<br>", "");
+        fixed_literal = fixed_literal.replace("&ndash;", "-");
+        return fixed_literal;
+    }
 
     @Override
     public void stop() {

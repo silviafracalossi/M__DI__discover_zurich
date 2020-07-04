@@ -17,33 +17,6 @@ public class DataLoader {
 
     private static String base_iri = "http://www.semanticweb.org/silvia/ontologies/2020/5/untitled-ontology-13#";
 
-    public static void main(String[] args) {
-
-        // Present also in the construct method
-        Repository repository = new SPARQLRepository("http://localhost:8080/sparql");
-        repository.initialize();
-        RepositoryConnection connection = repository.getConnection();
-
-        String sparqlQuery = "\nPREFIX : <"+base_iri+">\n" +
-                "SELECT * WHERE {\n" +
-                "\t ?n a :Neighbourhood ;\n" +
-                "\t\t :n_name ?name ; \n" +
-                "\t\t :neighbourhoodIn ?d . \n" +
-                "\t ?d a :District .\n" +
-                "}\n" +
-                "LIMIT 10\n";
-
-        System.out.println("Query executed by main method of DataLoader:");
-        System.out.println(sparqlQuery);
-
-        try (TupleQueryResult resultSet = connection.prepareTupleQuery(sparqlQuery).evaluate()) {
-            while (resultSet.hasNext()) {
-                BindingSet bindingSet = resultSet.next();
-                System.out.println(bindingSet);
-            }
-        }
-    }
-
     // Class constructor which connects to the SPARQL endpoint
     public DataLoader() {
         System.out.println("Connecting to the SPARQL endpoint...");
@@ -55,7 +28,6 @@ public class DataLoader {
         // Connecting to the SPARQL endpoint
         connection = repository.getConnection();
     }
-
 
     // Retrieving all the district areas
     public List<BindingSet> getDistrictAreas() {
@@ -92,7 +64,7 @@ public class DataLoader {
     }
 
     // Returns polygon of specified district
-    public BindingSet getDistrictById (int district_id) {
+    public List<BindingSet> getDistrictById (int district_id) {
 
         // Creating result list variable
         List<BindingSet> result_list = null;
@@ -101,9 +73,12 @@ public class DataLoader {
         // Formulating SPARQL Query
         String sparqlQuery = "" +
                 "PREFIX : <"+base_iri+">\n" +
-                "SELECT ?d_area \n" +
+                "SELECT ?d_area ?name \n" +
                 "WHERE {\n" +
                 "\t" +district_reference+ " :d_area ?d_area .\n" +
+                "\t ?n a :Neighbourhood ; \n" +
+                "\t\t :neighbourhoodIn "+district_reference+" ; \n" +
+                "\t\t :n_name ?name . \n" +
                 "}" + "\n";
 
         // Evaluating the query and retrieving the results
@@ -113,7 +88,7 @@ public class DataLoader {
             result_list = QueryResults.asList(query_result);
         }
 
-        return (result_list != null) ? result_list.get(0) : null;
+        return result_list;
     }
 
 
@@ -186,6 +161,31 @@ public class DataLoader {
         return result_list;
     }
 
+    // Returns the data of the specified IRI
+    public List<BindingSet> getMarkerByIRI(String IRI) {
+
+        // Creating result list variable
+        List<BindingSet> result_list = null;
+        String reference = "<"+IRI+">";
+
+        // Formulating SPARQL Query
+        String sparqlQuery = "" +
+                "PREFIX : <"+base_iri+">\n" +
+                "SELECT * \n" +
+                "WHERE {\n" +
+                "\t " +reference+ " ?p ?o .\n" +
+                "}\n";
+
+        // Evaluating the query and retrieving the results
+        System.out.println("\n[INFO] Query in getMarkerByIRI");
+        System.out.println(sparqlQuery);
+        try (TupleQueryResult query_result = connection.prepareTupleQuery(sparqlQuery).evaluate()) {
+            result_list = QueryResults.asList(query_result);
+        }
+
+        return result_list;
+    }
+
 
 //    // Retrieving the POI information of the given IRI
 //    public BindingSet getPoiByIRI(String IRI, String instance_class) {
@@ -216,7 +216,7 @@ public class DataLoader {
 //
 //        return (result_list != null) ? result_list.get(0) : null;
 //    }
-//
+
 //    // Retrieving the CarParking information of the given IRI
 //    public BindingSet getCarParkingByIRI(String IRI) {
 //
