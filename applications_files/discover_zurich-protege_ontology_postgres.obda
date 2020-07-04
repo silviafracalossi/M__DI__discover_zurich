@@ -16,7 +16,7 @@ source		SELECT knr::varchar as knr, kname, ST_AsText(ST_QuantizeCoordinates(fixe
 
 mappingId	Neighbourhood
 target		:data/Neighbourhood/{neighbourhoods} a :Neighbourhood ; :n_name {neighbourhoods}^^xsd:string ; :neighbourhoodIn :data/District/{district} . 
-source		SELECT neighbourhoods, district::varchar as district FROM neighbourhood;
+source		SELECT neighbourhoods, district as district FROM neighbourhood;
 
 mappingId	BusStop
 target		:data/BusStop/{NHSTID} a :BusStop , :Place ; :bs_name {CHSTNAME}^^xsd:string ; :bs_type {VTYP}^^xsd:string ; :pl_location {proper_geom}^^geo:wktLiteral . 
@@ -45,12 +45,12 @@ source		SELECT objectid, adresse, name, anzahl_oeffentliche_pp, ST_AsText(ST_Qua
 mappingId	BikeParking
 target		:data/BikeParking/{objectid} a :BikeParking , :Parking , :Place ; :bp_vehicle_type {vehicle_type}^^xsd:string ; :p_spaces_no {anzahl_pp}^^xsd:integer ; :pl_location {proper_geom}^^geo:wktLiteral . 
 source		SELECT objectid, anzahl_pp,
-			        (CASE "name"
-			            WHEN 'Beide' THEN 'both'
-			            WHEN 'Motorrad' THEN 'motorbike'
-			            WHEN 'Velo' THEN 'bike'
-			         END) as "vehicle_type", ST_AsText(ST_QuantizeCoordinates(fixed_geometry, 4)) AS proper_geom
-			      FROM bike_parking
+			(CASE "name"
+			WHEN 'Beide' THEN 'both'
+			WHEN 'Motorrad' THEN 'motorbike'
+			WHEN 'Velo' THEN 'bike'
+			END) as "vehicle_type", ST_AsText(ST_QuantizeCoordinates(fixed_geometry, 4)) AS proper_geom
+			FROM bike_parking
 
 mappingId	Attraction
 target		:data/Attraction/{objects_id} a :Attraction , :PointOfInterest , :Place ; :poi_name {objects_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
@@ -63,19 +63,19 @@ source		SELECT objects_id, objects_name_en, "objects_disambiguatingDescription_e
 mappingId	Museum
 target		:data/Museum/{objects_id} a :Museum , :Parking , :Place ; :poi_name {objects_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
 source		SELECT objects_id, objects_name_en, "objects_disambiguatingDescription_en" AS descr,
-			"objects_address_streetAddress" as address, "objects_openingHours_en" AS oh, "objects_image_url", objects_geo_longitude AS lng, objects_geo_latitude AS lat  FROM museum 
+			"objects_address_streetAddress" as address, "objects_openingHours_en" AS oh, "objects_image_url", objects_geo_longitude AS lng, objects_geo_latitude AS lat  FROM museum
 			WHERE objects_geo_longitude IS NOT NULL
 
 mappingId	Bar
 target		:data/Bar/{objects_id} a :Bar , :Parking , :Place ; :poi_name {objects_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
 source		SELECT objects_id, objects_name_en, "objects_disambiguatingDescription_en" AS descr,
-			"objects_address_streetAddress" as address, "objects_openingHours_en" AS oh, "objects_image_url", objects_geo_longitude AS lng, objects_geo_latitude AS lat  FROM bar 
+			"objects_address_streetAddress" as address, "objects_openingHours_en" AS oh, "objects_image_url", objects_geo_longitude AS lng, objects_geo_latitude AS lat  FROM bar
 			WHERE objects_geo_longitude IS NOT NULL
 
 mappingId	Restaurant
 target		:data/Restaurant/{poi_id} a :Restaurant , :Parking , :Place ; :poi_name {poi_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
 source		SELECT poi_id, poi_name_en, "poi_disambiguatingDescription_en" AS descr,
-			"poi_address_streetAddress" as address, "poi_openingHours_en" AS oh, "poi_image_url", poi_geo_longitude AS lng, poi_geo_latitude AS lat  FROM restaurant 
+			"poi_address_streetAddress" as address, "poi_openingHours_en" AS oh, "poi_image_url", poi_geo_longitude AS lng, poi_geo_latitude AS lat  FROM restaurant
 			WHERE poi_geo_longitude IS NOT NULL
 ]]
 
