@@ -668,18 +668,35 @@ public class MainWindow extends Application {
                 fixed_literal = fixLiteralFormat(literal);
 
                 if (fixed_predicate.compareTo("Location") != 0) {
-                    popup_content += fixed_predicate + ": " + fixed_literal + "\n";
+                    //fixed_literal = fixed_literal.replace(" ", "\n");
+                    popup_content += addNewLine(fixed_predicate + ": " + fixed_literal);
                 }
             }
         }
 
+        // Adding lines available at clicked busstop
         if (instance_class.compareTo("BusStop") == 0) {
-            System.out.println("We have to retrieve the lines");
+            String lines = "";
+            List<BindingSet> buslines = dl.getLineByBusStopIRI(IRI);
+            for (BindingSet line : buslines) {
+
+                Iterator<Binding> bIter = line.iterator();
+                String single_line_number = Literals.getLabel(bIter.next().getValue(), "");
+
+                if (single_line_number.compareTo("") != 0) {
+                    if (lines.compareTo("") != 0) {
+                        lines += ", ";
+                    }
+                    lines += single_line_number;
+                }
+            }
+            popup_content += "Lines: "+lines;
         }
 
         // Configurating the popup
         callout.setTitle(instance_class);
         callout.setDetail(popup_content);
+        callout.setMargin(10);
         callout.showCalloutAt(mapPoint, DURATION);
     }
 
@@ -692,12 +709,43 @@ public class MainWindow extends Application {
     }
 
     private String fixLiteralFormat(String literal) {
-        String fixed_literal = literal.replace("<p>", "");
-        fixed_literal = fixed_literal.replace("</p>", "");
-        fixed_literal = fixed_literal.replace("<br />", "");
-        fixed_literal = fixed_literal.replace("<br>", "");
+        String fixed_literal = literal.replace("<p>", " ");
+        fixed_literal = fixed_literal.replace("</p>", " ");
+        fixed_literal = fixed_literal.replace("<br />", " ");
+        fixed_literal = fixed_literal.replace("<br>", " ");
         fixed_literal = fixed_literal.replace("&ndash;", "-");
+        fixed_literal = fixed_literal.replace("&amp;", "&");
+        fixed_literal = fixed_literal.replace("<strong>", "");
+        fixed_literal = fixed_literal.replace("</strong>", "");
         return fixed_literal;
+    }
+
+    // Adding new lines to fit the popup window
+    private String addNewLine(String content) {
+
+        String result_string = "";
+        String to_be_processed = content;
+        int characters = 45;
+
+        // Iterating to insert spaces
+        while (to_be_processed.length() != 0) {
+
+            // If it is already short enough
+            if (to_be_processed.length() < characters) {
+                result_string+= to_be_processed + "\n";
+                to_be_processed = "";
+            }
+
+            else {
+                String considered_characters = to_be_processed.substring(0, characters);
+                String new_line = considered_characters.substring(0, considered_characters.lastIndexOf(' ')+1) + "\n";
+                result_string+= new_line;
+                to_be_processed = considered_characters.substring(
+                        considered_characters.lastIndexOf(' ')+1, considered_characters.length()
+                        ) +to_be_processed.substring(characters, to_be_processed.length());
+            }
+        }
+        return result_string;
     }
 
     @Override

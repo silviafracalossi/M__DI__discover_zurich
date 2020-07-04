@@ -186,142 +186,30 @@ public class DataLoader {
         return result_list;
     }
 
+    // Returns all the buslines of that bus stop based on given IRI
+    public List<BindingSet> getLineByBusStopIRI (String IRI) {
 
-//    // Retrieving the POI information of the given IRI
-//    public BindingSet getPoiByIRI(String IRI, String instance_class) {
-//
-//        // Creating result list variable
-//        List<BindingSet> result_list = null;
-//        String reference = "<"+IRI+">";
-//
-//        // Formulating SPARQL Query
-//        String sparqlQuery = "" +
-//                "PREFIX : <http://example.org/term/>\n" +
-//                "SELECT * \n" +
-//                "WHERE {\n" +
-//                "\t " +reference+ " rdf:type :"+instance_class+" .\n" +
-//                "\t " +reference+ " :name ?nam . \n" +
-//                "\t OPTIONAL {" +reference+ " :description ?descr } \n" +
-//                "\t OPTIONAL {" +reference+ " :address ?addr } \n" +
-//                "\t OPTIONAL {" +reference+ " :openingHours ?oh } \n" +
-//                "}" +
-//                "\n";
-//
-//        // Evaluating the query and retrieving the results
-//        System.out.println("\n[INFO] Query in getPOIbyIRI");
-//        System.out.println(sparqlQuery);
-//        try (TupleQueryResult query_result = connection.prepareTupleQuery(sparqlQuery).evaluate()) {
-//            result_list = QueryResults.asList(query_result);
-//        }
-//
-//        return (result_list != null) ? result_list.get(0) : null;
-//    }
+        // Creating result list variable
+        List<BindingSet> result_list = null;
+        String reference = "<"+IRI+">";
 
-//    // Retrieving the CarParking information of the given IRI
-//    public BindingSet getCarParkingByIRI(String IRI) {
-//
-//        // Creating result list variable
-//        List<BindingSet> result_list = null;
-//        String reference = "<"+IRI+">";
-//
-//        // Formulating SPARQL Query
-//        String sparqlQuery = "" +
-//                "PREFIX : <http://example.org/term/>\n" +
-//                "SELECT * \n" +
-//                "WHERE {\n" +
-//                "\t OPTIONAL {" +reference+ " :name ?nam } \n" +
-//                "\t OPTIONAL {" +reference+ " :address ?addr } \n" +
-//                "\t OPTIONAL {" +reference+ " :spacesNo ?sn } \n" +
-//                "}" +
-//                "\n";
-//
-//        // Evaluating the query and retrieving the results
-//        System.out.println("\n[INFO] Query in getCarParkingByIRI");
-//        System.out.println(sparqlQuery);
-//        try (TupleQueryResult query_result = connection.prepareTupleQuery(sparqlQuery).evaluate()) {
-//            result_list = QueryResults.asList(query_result);
-//        }
-//
-//        return (result_list != null) ? result_list.get(0) : null;
-//    }
-//
-//    // Retrieving the BikeParking information of the given IRI
-//    public BindingSet getBikeParkingByIRI(String IRI) {
-//
-//        // Creating result list variable
-//        List<BindingSet> result_list = null;
-//        String reference = "<"+IRI+">";
-//
-//        // Formulating SPARQL Query
-//        String sparqlQuery = "" +
-//                "PREFIX : <http://example.org/term/>\n" +
-//                "SELECT * \n" +
-//                "WHERE {\n" +
-//                "\t OPTIONAL {" +reference+ " :vehicleType ?vt } \n" +
-//                "\t OPTIONAL {" +reference+ " :spacesNo ?sn } \n" +
-//                "}" +
-//                "\n";
-//
-//        // Evaluating the query and retrieving the results
-//        System.out.println("\n[INFO] Query in getBikeParkingByIRI");
-//        System.out.println(sparqlQuery);
-//        try (TupleQueryResult query_result = connection.prepareTupleQuery(sparqlQuery).evaluate()) {
-//            result_list = QueryResults.asList(query_result);
-//        }
-//
-//        return (result_list != null) ? result_list.get(0) : null;
-//    }
-//
-//    // Retrieving the BusStop information of the given IRI
-//    public BindingSet getBusStopByIRI(String IRI) {
-//
-//        // Creating result list variable
-//        List<BindingSet> result_list = null;
-//        String reference = "<"+IRI+">";
-//
-//        // Formulating SPARQL Query
-//        String sparqlQuery = "" +
-//                "PREFIX : <http://example.org/term/>\n" +
-//                "SELECT * \n" +
-//                "WHERE {\n" +
-//                "\t OPTIONAL {" +reference+ " :name ?nam } \n" +
-//                "\t OPTIONAL {" +reference+ " :busStopType ?bst } \n" +
-//                "}" +
-//                "\n";
-//
-//        // Evaluating the query and retrieving the results
-//        System.out.println("\n[INFO] Query in getBusStopByIRI");
-//        System.out.println(sparqlQuery);
-//        try (TupleQueryResult query_result = connection.prepareTupleQuery(sparqlQuery).evaluate()) {
-//            result_list = QueryResults.asList(query_result);
-//        }
-//
-//        return (result_list != null) ? result_list.get(0) : null;
-//    }
-//
-//    // Retrieving the TrainStation information of the given IRI
-//    public BindingSet getTrainStationByIRI(String IRI) {
-//
-//        // Creating result list variable
-//        List<BindingSet> result_list = null;
-//        String reference = "<"+IRI+">";
-//
-//        // Formulating SPARQL Query
-//        String sparqlQuery = "" +
-//                "PREFIX : <http://example.org/term/>\n" +
-//                "SELECT * \n" +
-//                "WHERE {\n" +
-//                "\t OPTIONAL {" +reference+ " :name ?nam } \n" +
-//                "}" +
-//                "\n";
-//
-//        // Evaluating the query and retrieving the results
-//        System.out.println("\n[INFO] Query in getTrainStationByIRI");
-//        System.out.println(sparqlQuery);
-//        try (TupleQueryResult query_result = connection.prepareTupleQuery(sparqlQuery).evaluate()) {
-//            result_list = QueryResults.asList(query_result);
-//        }
-//
-//        return (result_list != null) ? result_list.get(0) : null;
-//    }
+        // Formulating SPARQL Query
+        String sparqlQuery = "" +
+                "PREFIX : <"+base_iri+">\n" +
+                "SELECT ?code \n" +
+                "WHERE {\n" +
+                "\t ?line :bl_code ?code ; \n" +
+                "\t\t :stopsAt "+reference+" .\n" +
+                "} ORDER BY ?code \n";
+
+        // Evaluating the query and retrieving the results
+        System.out.println("\n[INFO] Query in getLineByBusStopIRI");
+        System.out.println(sparqlQuery);
+        try (TupleQueryResult query_result = connection.prepareTupleQuery(sparqlQuery).evaluate()) {
+            result_list = QueryResults.asList(query_result);
+        }
+
+        return result_list;
+    }
+
 }
