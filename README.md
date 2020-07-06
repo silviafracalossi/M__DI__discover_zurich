@@ -5,8 +5,8 @@ Project for the Data Integration course.
 - Create a PostgreSQL database called "discover_zurich", extending postgis
 - Populate the database by restoring the custom backup using the file: "datasets/database/3_database_backup_custom"
 - Keep the PostgreSQL server on
-- Make sure that the ontop command in "start_sparql_endpoint.sh" executes the latest ontop/geof version
-- Run the "start_sparql_endpoint.sh" file
+- Make sure that the ontop command in "postgres_endpoint.sh" executes the latest ontop/geof version
+- Run the "postgres_endpoint.sh" file
 - Open the project in Intellij IDEA
 - Compile the Maven file "pom.xml"
 - Make sure that the JDBC driver for Denodo is configured:
