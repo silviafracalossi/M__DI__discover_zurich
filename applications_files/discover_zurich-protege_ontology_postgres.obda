@@ -19,7 +19,7 @@ target		:data/Neighbourhood/{neighbourhoods} a :Neighbourhood ; :n_name {neighbo
 source		SELECT neighbourhoods, district as district FROM neighbourhood;
 
 mappingId	BusStop
-target		:data/BusStop/{NHSTID} a :BusStop , :Place ; :bs_name {CHSTNAME}^^xsd:string ; :bs_type {VTYP}^^xsd:string ; :pl_location {proper_geom}^^geo:wktLiteral . 
+target		:data/BusStop/{NHSTID} a :BusStop ; :bs_name {CHSTNAME}^^xsd:string ; :bs_type {VTYP}^^xsd:string ; :pl_location {proper_geom}^^geo:wktLiteral . 
 source		SELECT "NHSTID"::varchar as "NHSTID", "CHSTNAME", "VTYP", ST_AsText(ST_QuantizeCoordinates(fixed_geometry, 4)) AS proper_geom FROM bus WHERE "LINIEN" IS NOT NULL
 
 mappingId	BusLine
@@ -27,23 +27,23 @@ target		:data/BusLine/{busline_name} a :BusLine ; :bl_code {busline_name}^^xsd:s
 source		SELECT busline_name, bustop_id::varchar as bustop_id FROM busline WHERE busline_name IS NOT NULL
 
 mappingId	TrainStation
-target		:data/TrainStation/{stations_id} a :TrainStation , :Place ; :ts_name {stations_name}^^xsd:string ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
+target		:data/TrainStation/{stations_id} a :TrainStation ; :ts_name {stations_name}^^xsd:string ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
 source		SELECT stations_id::varchar as stations_id, stations_name, stations_coordinate_x::varchar as lat, stations_coordinate_y::varchar as lng FROM train_station
 
 mappingId	BikeRental_CSV
-target		:data/BikeRental/{objectid} a :BikeRental , :Place ; :br_name {name}^^xsd:string ; :br_address {adresse}^^xsd:string ; :br_email {mail}^^xsd:string ; :br_phone_number {tel}^^xsd:string ; :br_website {www}^^xsd:string ; :pl_location {proper_geom}^^geo:wktLiteral . 
+target		:data/BikeRental/{objectid} a :BikeRental ; :br_name {name}^^xsd:string ; :br_address {adresse}^^xsd:string ; :br_email {mail}^^xsd:string ; :br_phone_number {tel}^^xsd:string ; :br_website {www}^^xsd:string ; :pl_location {proper_geom}^^geo:wktLiteral . 
 source		SELECT objectid, adresse, name, mail, tel, www, ST_AsText(ST_QuantizeCoordinates(fixed_geometry, 4)) AS proper_geom FROM "bike_rental_CSV"
 
 mappingId	BikeRental_JSON
-target		:data/BikeRental/{objects_id} a :BikeRental , :Place ; :br_name {objects_name_en}^^xsd:string ; :br_address {address}^^xsd:string ; :br_email {objects_address_email}^^xsd:string ; :br_phone_number {objects_address_phone}^^xsd:string ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
+target		:data/BikeRental/{objects_id} a :BikeRental ; :br_name {objects_name_en}^^xsd:string ; :br_address {address}^^xsd:string ; :br_email {objects_address_email}^^xsd:string ; :br_phone_number {objects_address_phone}^^xsd:string ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
 source		SELECT objects_id, objects_name_en, "objects_address_streetAddress" as address, objects_address_email, objects_address_phone, objects_geo_latitude AS lat, objects_geo_longitude AS lng FROM "bike_rental_JSON" WHERE objects_geo_latitude IS NOT NULL
 
 mappingId	CarParking
-target		:data/CarParking/{objectid} a :CarParking , :Parking , :Place ; :cp_address {adresse}^^xsd:string ; :cp_name {name}^^xsd:string ; :p_spaces_no {anzahl_oeffentliche_pp}^^xsd:integer ; :pl_location {proper_geom}^^geo:wktLiteral . 
+target		:data/CarParking/{objectid} a :CarParking ; :cp_address {adresse}^^xsd:string ; :cp_name {name}^^xsd:string ; :p_spaces_no {anzahl_oeffentliche_pp}^^xsd:integer ; :pl_location {proper_geom}^^geo:wktLiteral . 
 source		SELECT objectid, adresse, name, anzahl_oeffentliche_pp, ST_AsText(ST_QuantizeCoordinates(fixed_geometry, 4)) AS proper_geom FROM car_parking;
 
 mappingId	BikeParking
-target		:data/BikeParking/{objectid} a :BikeParking , :Parking , :Place ; :bp_vehicle_type {vehicle_type}^^xsd:string ; :p_spaces_no {anzahl_pp}^^xsd:integer ; :pl_location {proper_geom}^^geo:wktLiteral . 
+target		:data/BikeParking/{objectid} a :BikeParking ; :bp_vehicle_type {vehicle_type}^^xsd:string ; :p_spaces_no {anzahl_pp}^^xsd:integer ; :pl_location {proper_geom}^^geo:wktLiteral . 
 source		SELECT objectid, anzahl_pp,
 			(CASE "name"
 			WHEN 'Beide' THEN 'both'
@@ -53,27 +53,27 @@ source		SELECT objectid, anzahl_pp,
 			FROM bike_parking
 
 mappingId	Attraction
-target		:data/Attraction/{objects_id} a :Attraction , :PointOfInterest , :Place ; :poi_name {objects_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
+target		:data/Attraction/{objects_id} a :Attraction ; :poi_name {objects_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
 source		SELECT objects_id, objects_name_en, "objects_disambiguatingDescription_en" AS descr, "objects_address_streetAddress" as address, "objects_openingHours_en" AS oh, "objects_image_url", objects_geo_longitude AS lng, objects_geo_latitude AS lat FROM "attraction" WHERE objects_geo_longitude IS NOT NULL
 
 mappingId	Shop
-target		:data/Shop/{objects_id} a :Shop , :Parking , :Place ; :poi_name {objects_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
+target		:data/Shop/{objects_id} a :Shop ; :poi_name {objects_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
 source		SELECT objects_id, objects_name_en, "objects_disambiguatingDescription_en" AS descr, "objects_address_streetAddress" as address, "objects_openingHours_en" AS oh, "objects_image_url", objects_geo_longitude AS lng, objects_geo_latitude AS lat  FROM shopping WHERE objects_geo_longitude IS NOT NULL
 
 mappingId	Museum
-target		:data/Museum/{objects_id} a :Museum , :Parking , :Place ; :poi_name {objects_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
+target		:data/Museum/{objects_id} a :Museum ; :poi_name {objects_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
 source		SELECT objects_id, objects_name_en, "objects_disambiguatingDescription_en" AS descr,
 			"objects_address_streetAddress" as address, "objects_openingHours_en" AS oh, "objects_image_url", objects_geo_longitude AS lng, objects_geo_latitude AS lat  FROM museum
 			WHERE objects_geo_longitude IS NOT NULL
 
 mappingId	Bar
-target		:data/Bar/{objects_id} a :Bar , :Parking , :Place ; :poi_name {objects_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
+target		:data/Bar/{objects_id} a :Bar ; :poi_name {objects_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
 source		SELECT objects_id, objects_name_en, "objects_disambiguatingDescription_en" AS descr,
 			"objects_address_streetAddress" as address, "objects_openingHours_en" AS oh, "objects_image_url", objects_geo_longitude AS lng, objects_geo_latitude AS lat  FROM bar
 			WHERE objects_geo_longitude IS NOT NULL
 
 mappingId	Restaurant
-target		:data/Restaurant/{poi_id} a :Restaurant , :Parking , :Place ; :poi_name {poi_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
+target		:data/Restaurant/{poi_id} a :Restaurant ; :poi_name {poi_name_en} ; :poi_address {address} ; :poi_description {descr} ; :poi_opening_hours {oh} ; :pl_location "POINT ({lat} {lng})"^^geo:wktLiteral . 
 source		SELECT poi_id, poi_name_en, "poi_disambiguatingDescription_en" AS descr,
 			"poi_address_streetAddress" as address, "poi_openingHours_en" AS oh, "poi_image_url", poi_geo_longitude AS lng, poi_geo_latitude AS lat  FROM restaurant
 			WHERE poi_geo_longitude IS NOT NULL
